@@ -30,7 +30,8 @@ class Afnd:
 		self.delta = []
 		self.inicio = 0
 		self.final = 1
-		self.alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n"
+		# self.alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n"
+		self.alfabeto = "ab"
 		self._erToAfnd(regExp)
 
 
@@ -43,11 +44,12 @@ class Afnd:
 		estadosNoVistos.apilar(contadorEstados)
 		contadorEstados += 1
 		deltaD = {}
-		pdb.set_trace()
+		# pdb.set_trace()
 
 		while not estadosNoVistos.estaVacia():
 			estadosActual = estados[estadosNoVistos.desapilar()]
 			for char in self.alfabeto:
+				# pdb.set_trace()
 				estadosFinales = set()
 				for current in estadosActual:
 					if char in self.delta[current]:
@@ -60,9 +62,9 @@ class Afnd:
 						break
 
 				if newEstado:
-					contadorEstados += 1
 					estadosNoVistos.apilar(contadorEstados)
 					estados[contadorEstados] = estadosFinales
+					contadorEstados += 1
 
 		pdb.set_trace();True
 
@@ -98,8 +100,8 @@ class Afnd:
 				arcos.apilar([id1, id2])
 
 			elif char == '.':
-				arco21, arco22 = arcos.desapilar()
 				arco11, arco12 = arcos.desapilar()
+				arco21, arco22 = arcos.desapilar()
 				arcos.apilar([arco11, arco22])
 				
 				self.delta[arco12]['€'] = (arco21,)

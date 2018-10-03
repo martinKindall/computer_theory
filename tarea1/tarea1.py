@@ -3,11 +3,12 @@ from Afnd import Afnd
 import pdb
 
 
-regExp = "|..baba"
+# regExp = "|..baba"
+regExp = "*|.ab..aba"
 # regExp = "|ab"
 
 afnd1 = Afnd(regExp)
-afnd1.addLoopsTexto()
+# afnd1.addLoopsTexto()
 afnd1.convertToAfd()
 
 # pdb.set_trace();True
