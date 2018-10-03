@@ -15,12 +15,13 @@ class Afnd:
 
 
 	@staticmethod
-	def _clausuraEpsilon(estado, delta):
-		estadoFinal = [estado]
-		if '€' in delta[estado]:
-			masEstados = delta[estado]['€']
-			for estadoActual in masEstados:
-				estadoFinal += Afnd._clausuraEpsilon(estadoActual, delta)
+	def _clausuraEpsilon(estados, delta):
+		estadoFinal = estados.copy()
+		for estado in estados:
+			if '€' in delta[estado]:
+				masEstados = delta[estado]['€']
+				for estadoActual in masEstados:
+					estadoFinal.update(Afnd._clausuraEpsilon(set([estadoActual]), delta))
 
 		return estadoFinal
 
@@ -33,12 +34,38 @@ class Afnd:
 		self._erToAfnd(regExp)
 
 
-
 	def convertToAfd(self):
 		# clausura epsilon estado inicial
-		estadoInicial = Afnd._clausuraEpsilon(self.inicio, self.delta)
+		estadoInicial = Afnd._clausuraEpsilon(set([self.inicio]), self.delta)
+		estados = {0:estadoInicial.copy()}
+		contadorEstados = 0
+		estadosNoVistos = Pila()
+		estadosNoVistos.apilar(contadorEstados)
+		contadorEstados += 1
+		deltaD = {}
+		pdb.set_trace()
+
+		while not estadosNoVistos.estaVacia():
+			estadosActual = estados[estadosNoVistos.desapilar()]
+			for char in self.alfabeto:
+				estadosFinales = set()
+				for current in estadosActual:
+					if char in self.delta[current]:
+						estadosFinales.update(Afnd._clausuraEpsilon(set(self.delta[current][char]), self.delta))
+
+				newEstado = True
+				for key, value in estados.items():
+					if len(set(value)^estadosFinales) == 0:
+						newEstado = False
+						break
+
+				if newEstado:
+					contadorEstados += 1
+					estadosNoVistos.apilar(contadorEstados)
+					estados[contadorEstados] = estadosFinales
 
 		pdb.set_trace();True
+
 
 
 	def addLoopsTexto(self):
