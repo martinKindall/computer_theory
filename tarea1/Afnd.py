@@ -36,8 +36,8 @@ class Afnd:
 
 
 	@staticmethod
-	def fromRegExpToAfnd(regExp, alfabeto):
-		automata = Afnd(alfabeto)
+	def fromRegExpToAfnd(regExp, alfabeto, delta):
+		automata = Afnd(alfabeto, delta)
 		automata._erToAfnd(regExp)
 
 		return automata
@@ -47,7 +47,7 @@ class Afnd:
 	def tests():
 		regExp = "*|.ab..aba"
 		alfabeto = "ab"
-		afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto)
+		afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto, [])
 		afd1 = afnd1.convertToAfd()
 
 		assert afd1.aceptarCadena("ab")
@@ -63,8 +63,28 @@ class Afnd:
 		assert afd1.aceptarCadena("b") == False
 		assert afd1.aceptarCadena("a") == False
 
+		regExp2 = "|ab"
+		afnd2 = Afnd.fromRegExpToAfnd(regExp2, alfabeto, [])
+		afd2 = afnd2.convertToAfd()
 
-	def __init__(self, alfabeto="ab", delta=[], inicio=0, final=1):
+		assert afd2.aceptarCadena("a")
+		assert afd2.aceptarCadena("b")
+		assert afd2.aceptarCadena("aa") == False
+		assert afd2.aceptarCadena("bb") == False
+
+		regExp3 = "|a..bab"
+		afnd3 = Afnd.fromRegExpToAfnd(regExp3, alfabeto, [])
+		afd3 = afnd3.convertToAfd()
+
+		assert afd3.aceptarCadena("a")
+		assert afd3.aceptarCadena("bab")
+		assert afd3.aceptarCadena("aa") == False
+		assert afd3.aceptarCadena("bb") == False
+		assert afd3.aceptarCadena("aba") == False
+		assert afd3.aceptarCadena("babb") == False
+
+
+	def __init__(self, alfabeto, delta, inicio=0, final=1):
 		self.alfabeto = alfabeto
 		self.delta = delta
 		self.inicio = inicio
