@@ -1,4 +1,5 @@
 from Pila import Pila
+from Afd import Afd
 import pdb
 
 
@@ -35,12 +36,12 @@ class Afnd:
 			diccionario[key1][key2] = value
 
 
-	def __init__(self, regExp):
+	def __init__(self, regExp, alfabeto="ab"):
 		self.delta = []
 		self.inicio = 0
 		self.final = 1
 		# self.alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n"
-		self.alfabeto = "ab"
+		self.alfabeto = alfabeto
 		self._erToAfnd(regExp)
 
 
@@ -53,6 +54,7 @@ class Afnd:
 		estadosNoVistos.apilar(contadorEstados)
 		contadorEstados += 1
 		deltaD = {}
+		finalesD = []
 		# pdb.set_trace()
 
 		while not estadosNoVistos.estaVacia():
@@ -79,7 +81,12 @@ class Afnd:
 					estados[contadorEstados] = estadosFinales
 					contadorEstados += 1
 
-		pdb.set_trace();True
+		for key, value in estados.items():
+			if self.final in value:
+				finalesD.append(key)
+
+		pdb.set_trace()
+		return Afd(deltaD, self.alfabeto, finalesD)
 
 
 
