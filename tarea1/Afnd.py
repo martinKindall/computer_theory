@@ -29,11 +29,29 @@ class Afnd:
 
 	@staticmethod
 	def _createOrAddDict(diccionario, key1, key2, value):
-		# pdb.set_trace()
 		if key1 not in diccionario:
 			diccionario[key1] = {key2: value}
 		else:
 			diccionario[key1][key2] = value
+
+	@staticmethod
+	def tests():
+		regExp = "*|.ab..aba"
+		afnd1 = Afnd(regExp)
+		afd1 = afnd1.convertToAfd()
+
+		assert afd1.aceptarCadena("ab")
+		assert afd1.aceptarCadena("aba")
+		assert afd1.aceptarCadena("abaab")
+		assert afd1.aceptarCadena("ababababababaab")
+		assert afd1.aceptarCadena("abababbabababaab") == False
+		assert afd1.aceptarCadena("aab") == False
+		assert afd1.aceptarCadena("bab") == False
+		assert afd1.aceptarCadena("baba") == False
+		assert afd1.aceptarCadena("bb") == False
+		assert afd1.aceptarCadena("abaaab") == False
+		assert afd1.aceptarCadena("b") == False
+		assert afd1.aceptarCadena("a") == False
 
 
 	def __init__(self, regExp, alfabeto="ab"):
@@ -48,6 +66,7 @@ class Afnd:
 	def convertToAfd(self):
 		# clausura epsilon estado inicial
 		estadoInicial = Afnd._clausuraEpsilon(set([self.inicio]), self.delta)
+
 		estados = {0:estadoInicial.copy()}
 		contadorEstados = 0
 		estadosNoVistos = Pila()
@@ -55,13 +74,13 @@ class Afnd:
 		contadorEstados += 1
 		deltaD = {}
 		finalesD = []
-		# pdb.set_trace()
+		
 
 		while not estadosNoVistos.estaVacia():
 			indexEstado = estadosNoVistos.desapilar()
 			estadosActual = estados[indexEstado]
 			for char in self.alfabeto:
-				# pdb.set_trace()
+				
 				estadosFinales = set()
 				for current in estadosActual:
 					if char in self.delta[current]:
@@ -73,8 +92,7 @@ class Afnd:
 						Afnd._createOrAddDict(deltaD, indexEstado, char, key)
 						newEstado = False
 						break
-
-				# pdb.set_trace()
+				
 				if newEstado:
 					Afnd._createOrAddDict(deltaD, indexEstado, char, contadorEstados)
 					estadosNoVistos.apilar(contadorEstados)
@@ -85,7 +103,6 @@ class Afnd:
 			if self.final in value:
 				finalesD.append(key)
 
-		pdb.set_trace()
 		return Afd(deltaD, self.alfabeto, finalesD)
 
 
@@ -107,7 +124,7 @@ class Afnd:
 		arcos = Pila()
 
 		for char in regExp[::-1]:
-			# pdb.set_trace()
+			
 			if char in self.alfabeto:
 				indice, id1, id2 = self._actualizarContador(indice)
 

@@ -3,6 +3,8 @@ from Afnd import Afnd
 import pdb
 
 
+Afnd.tests()
+
 # regExp = "|..baba"
 regExp = "*|.ab..aba"
 # regExp = "|ab"
