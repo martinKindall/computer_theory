@@ -26,6 +26,15 @@ class Afnd:
 		return estadoFinal
 
 
+	@staticmethod
+	def _createOrAddDict(diccionario, key1, key2, value):
+		# pdb.set_trace()
+		if key1 not in diccionario:
+			diccionario[key1] = {key2: value}
+		else:
+			diccionario[key1][key2] = value
+
+
 	def __init__(self, regExp):
 		self.delta = []
 		self.inicio = 0
@@ -47,7 +56,8 @@ class Afnd:
 		# pdb.set_trace()
 
 		while not estadosNoVistos.estaVacia():
-			estadosActual = estados[estadosNoVistos.desapilar()]
+			indexEstado = estadosNoVistos.desapilar()
+			estadosActual = estados[indexEstado]
 			for char in self.alfabeto:
 				# pdb.set_trace()
 				estadosFinales = set()
@@ -58,10 +68,13 @@ class Afnd:
 				newEstado = True
 				for key, value in estados.items():
 					if len(set(value)^estadosFinales) == 0:
+						Afnd._createOrAddDict(deltaD, indexEstado, char, key)
 						newEstado = False
 						break
 
+				# pdb.set_trace()
 				if newEstado:
+					Afnd._createOrAddDict(deltaD, indexEstado, char, contadorEstados)
 					estadosNoVistos.apilar(contadorEstados)
 					estados[contadorEstados] = estadosFinales
 					contadorEstados += 1
