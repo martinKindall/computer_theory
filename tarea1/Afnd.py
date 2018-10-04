@@ -17,12 +17,12 @@ class Afnd:
 
 	@staticmethod
 	def _clausuraEpsilon(estados, delta):
-		estadoFinal = estados.copy()
+		estadoFinal = set(estados)
 		for estado in estados:
 			if '€' in delta[estado]:
 				masEstados = delta[estado]['€']
 				for estadoActual in masEstados:
-					estadoFinal.update(Afnd._clausuraEpsilon(set([estadoActual]), delta))
+					estadoFinal.update(Afnd._clausuraEpsilon([estadoActual], delta))
 
 		return estadoFinal
 
@@ -34,10 +34,20 @@ class Afnd:
 		else:
 			diccionario[key1][key2] = value
 
+
+	@staticmethod
+	def fromRegExpToAfnd(regExp, alfabeto):
+		automata = Afnd(alfabeto)
+		automata._erToAfnd(regExp)
+
+		return automata
+
+
 	@staticmethod
 	def tests():
 		regExp = "*|.ab..aba"
-		afnd1 = Afnd(regExp)
+		alfabeto = "ab"
+		afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto)
 		afd1 = afnd1.convertToAfd()
 
 		assert afd1.aceptarCadena("ab")
@@ -54,18 +64,16 @@ class Afnd:
 		assert afd1.aceptarCadena("a") == False
 
 
-	def __init__(self, regExp, alfabeto="ab"):
-		self.delta = []
-		self.inicio = 0
-		self.final = 1
-		# self.alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n"
+	def __init__(self, alfabeto="ab", delta=[], inicio=0, final=1):
 		self.alfabeto = alfabeto
-		self._erToAfnd(regExp)
+		self.delta = delta
+		self.inicio = inicio
+		self.final = final
 
 
 	def convertToAfd(self):
 		# clausura epsilon estado inicial
-		estadoInicial = Afnd._clausuraEpsilon(set([self.inicio]), self.delta)
+		estadoInicial = Afnd._clausuraEpsilon([self.inicio], self.delta)
 
 		estados = {0:estadoInicial.copy()}
 		contadorEstados = 0
@@ -74,7 +82,6 @@ class Afnd:
 		contadorEstados += 1
 		deltaD = {}
 		finalesD = []
-		
 
 		while not estadosNoVistos.estaVacia():
 			indexEstado = estadosNoVistos.desapilar()
@@ -84,7 +91,7 @@ class Afnd:
 				estadosFinales = set()
 				for current in estadosActual:
 					if char in self.delta[current]:
-						estadosFinales.update(Afnd._clausuraEpsilon(set(self.delta[current][char]), self.delta))
+						estadosFinales.update(Afnd._clausuraEpsilon(self.delta[current][char], self.delta))
 
 				newEstado = True
 				for key, value in estados.items():
@@ -104,7 +111,6 @@ class Afnd:
 				finalesD.append(key)
 
 		return Afd(deltaD, self.alfabeto, finalesD)
-
 
 
 	def addLoopsTexto(self):

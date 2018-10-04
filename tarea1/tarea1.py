@@ -9,7 +9,9 @@ Afnd.tests()
 regExp = "*|.ab..aba"
 # regExp = "|ab"
 
-afnd1 = Afnd(regExp)
+# alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n"
+alfabeto = "ab"
+afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto)
 # afnd1.addLoopsTexto()
 afd1 = afnd1.convertToAfd()
 
