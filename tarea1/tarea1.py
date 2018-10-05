@@ -27,6 +27,7 @@ regExp = "|a..bab"
 # alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n"
 alfabeto = "ab"
 afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto, [])
+afnd1Invertido = afnd1.invertir()
 afnd1.addLoopsTexto()
 afd1 = afnd1.convertToAfd()
 

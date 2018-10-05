@@ -174,6 +174,18 @@ class Afnd:
 			assert False
 
 
+	def invertir(self):
+		newDelta = [{} for _ in range(len(self.delta))]
+
+		for idx, mDelta in enumerate(self.delta):
+			for char in self.alfabeto + '€':
+				if char in mDelta:
+					for initEstado in mDelta[char]:
+						newDelta[initEstado][char] = idx
+
+		return Afnd(self.alfabeto, newDelta, self.final, self.inicio)
+
+
 	@staticmethod
 	def tests():
 		regExp = "*|.ab..aba"
