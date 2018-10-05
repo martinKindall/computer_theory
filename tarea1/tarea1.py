@@ -4,7 +4,7 @@ from Afnd import Afnd
 from PatternMatch import PatternMatch
 
 
-Afnd.tests()
+# Afnd.tests()
 
 
 def principal(accion, automata, afd1Inv):
@@ -38,17 +38,21 @@ def pruebas():
 	principal(buscarMaches, afd1, afd1Inv)
 
 
-argumentos = sys.argv
+def main():
+	argumentos = sys.argv
 
-if len(argumentos) != 3:
-	raise Exception("uso correcto: python3 tarea1.py archivo regEx")
+	if len(argumentos) != 3:
+		raise Exception("uso correcto: python3 tarea1.py archivo regEx")
 
-texto = argumentos[1]
-regEx = argumentos[2]
+	texto = argumentos[1]
+	regEx = argumentos[2]
 
-file = open(texto + ".txt", "r").read()
-# pdb.set_trace()
-matches = PatternMatch.buscarYFormatear(regEx, file)
+	file = open(texto + ".txt", "r").read()
+	# pdb.set_trace()
+	matches = PatternMatch.buscarYFormatear(regEx, file)
 
-for match in matches:
-	print(match)
+	for match in matches:
+		print(match)
+
+
+main()

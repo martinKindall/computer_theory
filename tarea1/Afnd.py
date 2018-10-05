@@ -133,6 +133,8 @@ class Afnd:
 				if self.final == arco12:
 					self.final = arco22
 
+				# pdb.set_trace();True
+
 			elif char == '|':
 				indice, id1, id2 = self._actualizarContador(indice)
 				arco21, arco22 = arcos.desapilar()
@@ -240,3 +242,25 @@ class Afnd:
 		assert afd4.aceptarCadena("bbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbb") 
 		assert afd4.aceptarCadena("aa") == False
 		assert afd4.aceptarCadena("bb") == False
+
+		regExp5 = "..bab"
+		afnd5 = Afnd.fromRegExpToAfnd(regExp5, alfabeto, [])
+		afd5 = afnd5.convertToAfd()
+
+		assert afd5.aceptarCadena("bab")
+		assert afd5.aceptarCadena("aa") == False
+		assert afd5.aceptarCadena("bb") == False
+		assert afd5.aceptarCadena("aba") == False
+		assert afd5.aceptarCadena("babb") == False
+
+		regExp6 = "*a"
+		afnd6 = Afnd.fromRegExpToAfnd(regExp6, alfabeto, [])
+		afd6 = afnd6.convertToAfd()
+
+		assert afd6.aceptarCadena("a") 
+		assert afd6.aceptarCadena("aa") 
+		assert afd6.aceptarCadena("aaaaaaaaa") 
+		assert afd6.aceptarCadena("bab") == False
+		assert afd6.aceptarCadena("bb") == False
+		assert afd6.aceptarCadena("aba") == False
+		assert afd6.aceptarCadena("babb") == False
