@@ -166,12 +166,11 @@ class Afnd:
 					self.final = id2
 			
 			else:
-				print("La expresión contiene un caracter fuera del alfabeto")
-				assert False
+				raise Exception("La expresión contiene un caracter fuera del alfabeto: a, ..., z, A, ..., Z, 0, ..., 9, ,\\n")
 
 		arcos.desapilar()
 		if not arcos.estaVacia():
-			assert False
+			raise Exception("Expresion regular debe estar en notación prefijo y ser correcta. Ej: |a..bab")
 
 
 	def invertir(self):

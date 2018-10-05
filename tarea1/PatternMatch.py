@@ -5,7 +5,7 @@ class PatternMatch():
 	
 	@staticmethod
 	def buscar(regEx, texto):
-		alfabeto = "ab\n"
+		alfabeto = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890\n "
 
 		afnd1 = Afnd.fromRegExpToAfnd(regEx, alfabeto, [])
 		afnd1Invertido = afnd1.invertir()
