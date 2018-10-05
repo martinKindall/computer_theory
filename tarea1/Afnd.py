@@ -181,7 +181,11 @@ class Afnd:
 			for char in self.alfabeto + '€':
 				if char in mDelta:
 					for initEstado in mDelta[char]:
-						newDelta[initEstado][char] = idx
+						if char not in newDelta[initEstado]:
+							newDelta[initEstado][char] = (idx,)
+						else:
+							newDelta[initEstado][char] += (idx,)
+
 
 		return Afnd(self.alfabeto, newDelta, self.final, self.inicio)
 

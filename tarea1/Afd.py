@@ -12,7 +12,7 @@ class Afd:
 		return len(terminos) > 0 and (terminos.pop() + 1) == len(cadena)
 
 
-	def buscarPatrones(self, cadena):
+	def buscarPatrones(self, cadena, afdInvertido=None, soloUnTermino=False):
 		estadoActual = self.inicio
 		terminos = []
 
@@ -22,5 +22,13 @@ class Afd:
 
 				if estadoActual in self.estadosFinales:
 					terminos.append(idx)
+
+					if soloUnTermino:
+						return terminos
+
+					if not (afdInvertido is None):
+						termino = terminos.pop()
+						inicio = afdInvertido.buscarPatrones(cadena[:-(len(cadena)-idx)][::-1], soloUnTermino=True)
+						terminos.append((inicio, termino))
 
 		return terminos
