@@ -62,6 +62,7 @@ class Afnd:
 		deltaD = {}
 		finalesD = []
 
+
 		while not estadosNoVistos.estaVacia():
 			indexEstado = estadosNoVistos.desapilar()
 			estadosActual = estados[indexEstado]
@@ -89,12 +90,15 @@ class Afnd:
 			if self.final in value:
 				finalesD.append(key)
 
+		
+
 		return Afd(deltaD, self.alfabeto, finalesD)
 
 
 	def addLoopsTexto(self):
 		for char in self.alfabeto:
-			self.delta[self.inicio][char] = (self.inicio,)
+			if char not in self.delta[self.inicio]:
+				self.delta[self.inicio][char] = (self.inicio,)
 
 
 	# _erToAfnd: string -> None
@@ -132,8 +136,6 @@ class Afnd:
 					self.inicio = arco11
 				if self.final == arco12:
 					self.final = arco22
-
-				# pdb.set_trace();True
 
 			elif char == '|':
 				indice, id1, id2 = self._actualizarContador(indice)
@@ -248,6 +250,7 @@ class Afnd:
 		afd5 = afnd5.convertToAfd()
 
 		assert afd5.aceptarCadena("bab")
+		assert afd5.aceptarCadena("baba") == False
 		assert afd5.aceptarCadena("aa") == False
 		assert afd5.aceptarCadena("bb") == False
 		assert afd5.aceptarCadena("aba") == False
