@@ -1,3 +1,4 @@
+import pdb
 
 class Afd:
 	def __init__(self, delta, alfabeto, estadosFinales):
@@ -15,20 +16,22 @@ class Afd:
 	def buscarPatrones(self, cadena, afdInvertido=None, soloUnTermino=False):
 		estadoActual = self.inicio
 		terminos = []
+		cadenaActual = ''
 
 		for idx, char in enumerate(cadena):
+			cadenaActual += char
 			if char in self.delta[estadoActual]:
 				estadoActual = self.delta[estadoActual][char]
 
 				if estadoActual in self.estadosFinales:
 					terminos.append(idx)
-
 					if soloUnTermino:
-						return terminos
+						return idx
 
 					if not (afdInvertido is None):
-						termino = terminos.pop()
-						inicio = afdInvertido.buscarPatrones(cadena[:-(len(cadena)-idx)][::-1], soloUnTermino=True)
-						terminos.append((inicio, termino))
+						end = terminos.pop()
+						start = afdInvertido.buscarPatrones(cadenaActual[::-1], soloUnTermino=True)
+						pdb.set_trace()
+						terminos.append((idx-start, end))
 
 		return terminos

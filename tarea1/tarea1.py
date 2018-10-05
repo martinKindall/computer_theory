@@ -28,12 +28,12 @@ regExp = "|a..bab"
 alfabeto = "ab"
 afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto, [])
 afnd1Invertido = afnd1.invertir()
-# afnd1.addLoopsTexto()
-pdb.set_trace()
-afd1Inv = afnd1Invertido.convertToAfd()
-afd1 = afnd1.convertToAfd()
+afnd1.addLoopsTexto()
 
-# principal(buscarMaches, afd1, afd1Inv)
+afd1 = afnd1.convertToAfd()
+afd1Inv = afnd1Invertido.convertToAfd()
+
+principal(buscarMaches, afd1, afd1Inv)
 
 
 
