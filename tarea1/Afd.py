@@ -31,7 +31,6 @@ class Afd:
 					if not (afdInvertido is None):
 						end = terminos.pop()
 						start = afdInvertido.buscarPatrones(cadenaActual[::-1], soloUnTermino=True)
-						pdb.set_trace()
 						terminos.append((idx-start, end))
 
 		return terminos

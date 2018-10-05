@@ -1,6 +1,8 @@
-from Afnd import Afnd
-
+import sys
 import pdb
+from Afnd import Afnd
+from PatternMatch import PatternMatch
+
 
 Afnd.tests()
 
@@ -17,24 +19,36 @@ def principal(accion, automata, afd1Inv):
 def buscarMaches(cadena, automata, afd1Inv):
 		return automata.buscarPatrones(cadena, afd1Inv)
 
+
 def buscarCadenas(cadena, automata, afd1Inv):
 		return automata.aceptarCadena(cadena)
 
-# regExp = "|..baba"
-regExp = "|a..bab"
-# regExp = "|ab"
 
-# alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n"
-alfabeto = "ab"
-afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto, [])
-afnd1Invertido = afnd1.invertir()
-afnd1.addLoopsTexto()
+def pruebas():
+	regExp = "|a..bab"
+	alfabeto = "ab"
 
-afd1 = afnd1.convertToAfd()
-afd1Inv = afnd1Invertido.convertToAfd()
+	afnd1 = Afnd.fromRegExpToAfnd(regExp, alfabeto, [])
+	afnd1Invertido = afnd1.invertir()
+	afnd1.addLoopsTexto()
 
-principal(buscarMaches, afd1, afd1Inv)
+	afd1 = afnd1.convertToAfd()
+	afd1Inv = afnd1Invertido.convertToAfd()
 
+	principal(buscarMaches, afd1, afd1Inv)
 
 
-# pdb.set_trace();True
+argumentos = sys.argv
+
+if len(argumentos) != 3:
+	raise Exception("uso correcto: python3 tarea1.py archivo regEx")
+
+texto = argumentos[1]
+regEx = argumentos[2]
+
+file = open(texto + ".txt", "r").read()
+# pdb.set_trace()
+matches = PatternMatch.buscarYFormatear(regEx, file)
+
+for match in matches:
+	print(match)
