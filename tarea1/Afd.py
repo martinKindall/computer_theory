@@ -27,8 +27,6 @@ class Afd:
 
 			if char in self.delta[estadoActual]:
 				estadoActual = self.delta[estadoActual][char]
-				# if len(cadenaActual) >= 47:
-					# pdb.set_trace()
 				if estadoActual in self.estadosFinales:
 					terminos.append(idx)
 					if soloUnTermino:
@@ -42,7 +40,7 @@ class Afd:
 							terminos.append((idx-start, end))
 
 		if len(simbolosExternos) > 0:
-		    print("El texto contiene simbolos no encontrado en el alfabeto: " + str(simbolosExternos))
+		    print("Warning: El texto contiene simbolos no encontrado en el alfabeto: " + str(simbolosExternos) + "\n\n")
 
 		if soloUnTermino:
 			return None

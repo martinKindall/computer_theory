@@ -90,8 +90,6 @@ class Afnd:
 			if self.final in value:
 				finalesD.append(key)
 
-		
-
 		return Afd(deltaD, self.alfabeto, finalesD)
 
 
@@ -101,7 +99,6 @@ class Afnd:
 				self.delta[self.inicio][char] = (self.inicio,)
 			else:
 				self.delta[self.inicio][char] += (self.inicio,)
-
 
 
 	# _erToAfnd: string -> None
@@ -191,7 +188,6 @@ class Afnd:
 							newDelta[initEstado][char] = (idx,)
 						else:
 							newDelta[initEstado][char] += (idx,)
-
 
 		return Afnd(self.alfabeto, newDelta, self.final, self.inicio)
 
