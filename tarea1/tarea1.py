@@ -5,6 +5,7 @@ from PatternMatch import PatternMatch
 
 
 Afnd.tests()
+PatternMatch.tests()
 
 
 def principal(accion, automata, afd1Inv):

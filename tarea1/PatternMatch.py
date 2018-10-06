@@ -38,3 +38,16 @@ class PatternMatch():
 		listaResultados = PatternMatch.buscar(regEx, texto)
 
 		return PatternMatch.formatear(listaResultados)
+
+
+	@staticmethod
+	def tests():
+
+		res1 = PatternMatch.buscarYFormatear("b", "bab\n")
+		assert res1[0] == "[0,0]: b"
+		assert res1[1] == "[2,2]: b"
+		res2 = PatternMatch.buscarYFormatear("|a..bab", "bab\n")
+		assert res2[0] == "[1,1]: a"
+		assert res2[1] == "[0,2]: bab"
+		res3 = PatternMatch.buscarYFormatear("..bab", "bab\n")
+		assert res3[0] == "[0,2]: bab"

@@ -99,6 +99,9 @@ class Afnd:
 		for char in self.alfabeto:
 			if char not in self.delta[self.inicio]:
 				self.delta[self.inicio][char] = (self.inicio,)
+			else:
+				self.delta[self.inicio][char] += (self.inicio,)
+
 
 
 	# _erToAfnd: string -> None
