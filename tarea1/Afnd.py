@@ -15,6 +15,9 @@ class Afnd:
 		return (indice, id1, id2)
 
 
+	# _clausuraEpsilon: list/set/tuple list -> set
+	# realiza la clausura epsilon de un estado, basando en el conjunto de 
+	# transiciones delta
 	@staticmethod
 	def _clausuraEpsilon(estados, delta):
 		estadoFinal = set(estados)
@@ -35,6 +38,10 @@ class Afnd:
 			diccionario[key1][key2] = value
 
 
+	# fromRegExpToAfnd: string string list -> Afnd
+	# crea un automata no deterministico a partir de 
+	# una expresion regular y un alfabeto. Delta puede ser
+	# una lista vacia o preconstruida.
 	@staticmethod
 	def fromRegExpToAfnd(regExp, alfabeto, delta):
 		automata = Afnd(alfabeto, delta)
@@ -50,6 +57,11 @@ class Afnd:
 		self.final = final
 
 
+	# convertToAfd: self ->	Afd
+	# aplica el metodo visto en clases usando clausuras epsilon
+	# y uniendo las transiciones posibles entre estados para convertir el objeto afnd
+	# a un afd y retornarlo. Cabe notar que el método termina cuando ya se han creado todos
+	# los estados posibles y la pila de estados no vistos está vacía.
 	def convertToAfd(self):
 		# clausura epsilon estado inicial
 		estadoInicial = Afnd._clausuraEpsilon([self.inicio], self.delta)
@@ -93,6 +105,10 @@ class Afnd:
 		return Afd(deltaD, self.alfabeto, finalesD)
 
 
+	# addLoopsTexto: self -> None
+	# efecto: agrega loops al estado inicial para cada caracter
+	# del alfabeto. Esto es necesario cuando queremos un automata
+	# que recorra texto.
 	def addLoopsTexto(self):
 		for char in self.alfabeto:
 			if char not in self.delta[self.inicio]:
@@ -101,9 +117,12 @@ class Afnd:
 				self.delta[self.inicio][char] += (self.inicio,)
 
 
-	# _erToAfnd: string -> None
-	# convierte una expresion regular a un automata
-	# no deterministico usando Thompson!
+	# _erToAfnd: self string -> None
+	# convierte una expresion regular en notacion prefijo a un automata
+	# no deterministico usando Thompson. Notar que la expresión regular
+	# se lee al revez, cada vez que se parsea un simbolo, se aplica thompson y se apila.
+	# Cada vez que se parsea un operador (*,|,.) se desapilan los dos ultimos elementos
+	# y se aplica la regla de Thompson correspondiente.
 	# efecto: modifica el afnd		
 	def _erToAfnd(self, regExp):
 
@@ -177,6 +196,9 @@ class Afnd:
 			raise Exception("Expresion regular debe estar en notación prefijo y ser correcta. Ej: |a..bab")
 
 
+	# invertir: self -> None
+	# A partir del objeto afnd actual, crea un conjunto de transiciones invertidas
+	# y luego retorna un nuevo afnd con las transiciones y los estados final por inicial invertidos
 	def invertir(self):
 		newDelta = [{} for _ in range(len(self.delta))]
 

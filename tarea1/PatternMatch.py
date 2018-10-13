@@ -3,6 +3,10 @@ from Afnd import Afnd
 
 class PatternMatch():
 	
+	# buscar: string string -> tuple
+	# busca en el alfabeto determinado la expresion regular en el texto dado,
+	# usando automatas. El resultado es una tupla de una lista de matches 
+	# (posiciones) y una lista de substrings.
 	@staticmethod
 	def buscar(regEx, texto):
 		alfabeto = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890\n "
@@ -23,10 +27,13 @@ class PatternMatch():
 		return (matches, substrs)
 
 
-	def formatear(listaResultados):
+	# formatear: tuple -> list
+	# recibe el resultado de la funcion buscar y lo transforma a una lista de strings,
+	# mostrando las posiciones de coincidencia (matches) y los substrings encontrados
+	def formatear(tuplaResultados):
 		busquedas = []
-		matches = listaResultados[0]
-		substrs = listaResultados[1]
+		matches = tuplaResultados[0]
+		substrs = tuplaResultados[1]
 
 		for idx, _ in enumerate(matches):
 			busquedas.append("["+str(matches[idx][0])+","+str(matches[idx][1])+"]: " + str(substrs[idx]))
@@ -35,9 +42,9 @@ class PatternMatch():
 
 
 	def buscarYFormatear(regEx, texto):
-		listaResultados = PatternMatch.buscar(regEx, texto)
+		tuplaResultados = PatternMatch.buscar(regEx, texto)
 
-		return PatternMatch.formatear(listaResultados)
+		return PatternMatch.formatear(tuplaResultados)
 
 
 	@staticmethod

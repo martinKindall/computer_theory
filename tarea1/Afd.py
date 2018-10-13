@@ -8,12 +8,20 @@ class Afd:
 		self.estadosFinales = estadosFinales
 
 
+	# aceptarCadena: self string -> boolean
+	# retorna True si la cadena es aceptada por el automata.
+	# Reutiliza la funcion buscarPatrones
 	def aceptarCadena(self, cadena):
 		terminos = self.buscarPatrones(cadena)
 
 		return len(terminos) > 0 and (terminos.pop() + 1) == len(cadena)
 
 
+	# buscarPatrones: self string Afd boolean -> list
+	# retorna una lista con todas las posiciones en donde el afd detecto
+	# una cadena aceptada. Si el parametro afdInvertido existe, entonces recursivamente
+	# se busca una coincidencia en reversa a partir de un final encontrado. Si soloUnTermino
+	# es True, la funcion retorna la primera coincidencia encontrada.
 	def buscarPatrones(self, cadena, afdInvertido=None, soloUnTermino=False):
 		estadoActual = self.inicio
 		terminos = []
