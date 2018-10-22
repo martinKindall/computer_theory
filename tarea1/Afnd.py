@@ -118,11 +118,17 @@ class Afnd:
 
 
 	# _erToAfnd: self string -> None
-	# convierte una expresion regular en notacion prefijo a un automata
+	# Convierte una expresion regular en notacion prefijo a un automata
 	# no deterministico usando Thompson. Notar que la expresión regular
-	# se lee al revez, cada vez que se parsea un simbolo, se aplica thompson y se apila.
-	# Cada vez que se parsea un operador (*,|,.) se desapilan los dos ultimos elementos
-	# y se aplica la regla de Thompson correspondiente.
+	# se lee al revez. 
+	# Cada vez que se parsea un simbolo, se aplica thompson y se apila.
+	# Cada vez que se parsea un operador como | ó . se desapilan los dos ultimos elementos
+	# y se aplica la regla de Thompson correspondiente, y se vuelve a apilar la nueva estructura.
+	# Si se parsea el operador *, se desapila el último elemento, se aplica Thompson correspondiente
+	# a la clausura de Kleene, y se vuelve a apilar. Al final del algoritmo solo debe haber 1 elemento
+	# en la pila, de lo contrario hubo un error de sintaxis en la expresión regular.
+	# Además, en cada operación de parseo se van agregando las transiciones correspondientes
+	# al arreglo del objeto -> delta
 	# efecto: modifica el afnd		
 	def _erToAfnd(self, regExp):
 
