@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftMULTIPLYDIVIDEDIVIDE EQUALS FLOAT INT MINUS MULTIPLY NAME PLUS\n\tcalc : expression\n\t\t | var_assign\n\t     | empty\n\t\n\tvar_assign : NAME EQUALS expression\n\t\n\texpression : expression MULTIPLY expression\n\t\t\t   | expression DIVIDE expression\n\t\t\t   | expression PLUS expression\n\t\t\t   | expression MINUS expression\n\t\n\texpression : INT\n\t\t\t   | FLOAT\n\t\n\texpression : NAME\n\t\n\tempty :\n\t'
+_lr_signature = 'leftPLUSMINUSleftMULTIPLYDIVIDEDIVIDE EQUALS FLOAT INT LEFT_PAR MINUS MULTIPLY NAME PLUS RIGHT_PAR\n\tcalc : var_assign\n\t\t | expression\n\t     | empty\n\t\n\tvar_assign : NAME EQUALS expression\n\t\n\texpression : expression MULTIPLY expression\n\t\t\t   | expression DIVIDE expression\n\t\t\t   | expression PLUS expression\n\t\t\t   | expression MINUS expression\n\t\t\t   | LEFT_PAR expression RIGHT_PAR\n\t\n\texpression : INT\n\t\t\t   | FLOAT\n\t\n\texpression : NAME\n\t\n\tempty :\n\t'
     
-_lr_action_items = {'EQUALS':([7,],[12,]),'FLOAT':([0,8,9,10,11,12,],[6,6,6,6,6,6,]),'MINUS':([1,4,6,7,13,14,15,16,17,18,],[11,-9,-10,-11,-6,-11,-5,-7,-8,11,]),'INT':([0,8,9,10,11,12,],[4,4,4,4,4,4,]),'DIVIDE':([1,4,6,7,13,14,15,16,17,18,],[8,-9,-10,-11,-6,-11,-5,8,8,8,]),'MULTIPLY':([1,4,6,7,13,14,15,16,17,18,],[9,-9,-10,-11,-6,-11,-5,9,9,9,]),'$end':([0,1,2,3,4,5,6,7,13,14,15,16,17,18,],[-12,-1,0,-2,-9,-3,-10,-11,-6,-11,-5,-7,-8,-4,]),'PLUS':([1,4,6,7,13,14,15,16,17,18,],[10,-9,-10,-11,-6,-11,-5,-7,-8,10,]),'NAME':([0,8,9,10,11,12,],[7,14,14,14,14,14,]),}
+_lr_action_items = {'MULTIPLY':([1,4,5,7,9,10,16,17,18,19,20,21,],[-11,14,-12,-10,14,-12,-9,14,-6,14,-5,14,]),'DIVIDE':([1,4,5,7,9,10,16,17,18,19,20,21,],[-11,12,-12,-10,12,-12,-9,12,-6,12,-5,12,]),'LEFT_PAR':([0,2,11,12,13,14,15,],[2,2,2,2,2,2,2,]),'EQUALS':([5,],[15,]),'NAME':([0,2,11,12,13,14,15,],[5,10,10,10,10,10,10,]),'MINUS':([1,4,5,7,9,10,16,17,18,19,20,21,],[-11,13,-12,-10,13,-12,-9,-7,-6,-8,-5,13,]),'INT':([0,2,11,12,13,14,15,],[7,7,7,7,7,7,7,]),'$end':([0,1,3,4,5,6,7,8,10,16,17,18,19,20,21,],[-13,-11,0,-2,-12,-1,-10,-3,-12,-9,-7,-6,-8,-5,-4,]),'RIGHT_PAR':([1,7,9,10,16,17,18,19,20,],[-11,-10,16,-12,-9,-7,-6,-8,-5,]),'PLUS':([1,4,5,7,9,10,16,17,18,19,20,21,],[-11,11,-12,-10,11,-12,-9,-7,-6,-8,-5,11,]),'FLOAT':([0,2,11,12,13,14,15,],[1,1,1,1,1,1,1,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,8,9,10,11,12,],[1,13,15,16,17,18,]),'empty':([0,],[5,]),'calc':([0,],[2,]),'var_assign':([0,],[3,]),}
+_lr_goto_items = {'var_assign':([0,],[6,]),'calc':([0,],[3,]),'expression':([0,2,11,12,13,14,15,],[4,9,17,18,19,20,21,]),'empty':([0,],[8,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,16 +27,17 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> calc","S'",1,None,None,None),
-  ('calc -> expression','calc',1,'p_calc','calc.py',60),
-  ('calc -> var_assign','calc',1,'p_calc','calc.py',61),
-  ('calc -> empty','calc',1,'p_calc','calc.py',62),
-  ('var_assign -> NAME EQUALS expression','var_assign',3,'p_var_assign','calc.py',69),
-  ('expression -> expression MULTIPLY expression','expression',3,'p_expression','calc.py',76),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression','calc.py',77),
-  ('expression -> expression PLUS expression','expression',3,'p_expression','calc.py',78),
-  ('expression -> expression MINUS expression','expression',3,'p_expression','calc.py',79),
-  ('expression -> INT','expression',1,'p_expression_int_float','calc.py',87),
-  ('expression -> FLOAT','expression',1,'p_expression_int_float','calc.py',88),
-  ('expression -> NAME','expression',1,'p_expression_var','calc.py',95),
-  ('empty -> <empty>','empty',0,'p_empty','calc.py',102),
+  ('calc -> var_assign','calc',1,'p_calc','calc.py',64),
+  ('calc -> expression','calc',1,'p_calc','calc.py',65),
+  ('calc -> empty','calc',1,'p_calc','calc.py',66),
+  ('var_assign -> NAME EQUALS expression','var_assign',3,'p_var_assign','calc.py',73),
+  ('expression -> expression MULTIPLY expression','expression',3,'p_expression','calc.py',80),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression','calc.py',81),
+  ('expression -> expression PLUS expression','expression',3,'p_expression','calc.py',82),
+  ('expression -> expression MINUS expression','expression',3,'p_expression','calc.py',83),
+  ('expression -> LEFT_PAR expression RIGHT_PAR','expression',3,'p_expression','calc.py',84),
+  ('expression -> INT','expression',1,'p_expression_int_float','calc.py',96),
+  ('expression -> FLOAT','expression',1,'p_expression_int_float','calc.py',97),
+  ('expression -> NAME','expression',1,'p_expression_var','calc.py',104),
+  ('empty -> <empty>','empty',0,'p_empty','calc.py',115),
 ]

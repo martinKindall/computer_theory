@@ -11,7 +11,9 @@ tokens = [
 	'MINUS',
 	'DIVIDE',
 	'MULTIPLY',
-	'EQUALS'
+	'EQUALS',
+	'LEFT_PAR',
+	'RIGHT_PAR'
 ]
 
 t_PLUS = r'\+'
@@ -19,6 +21,8 @@ t_MINUS = r'\-'
 t_MULTIPLY = r'\*'
 t_DIVIDE = r'\/'
 t_EQUALS = r'\='
+t_LEFT_PAR = r'\('
+t_RIGHT_PAR = r'\)'
 
 t_ignore = r' '
 
@@ -36,7 +40,7 @@ def t_INT(t):
 
 
 def t_NAME(t):
-	r'[a-zA-Z_][a-zA-Z_0-9]*'
+	r'[a-z0-9]+'
 	t.type = 'NAME'
 	return t
 
@@ -57,8 +61,8 @@ precedence = (
 
 def p_calc(p):
 	'''
-	calc : expression
-		 | var_assign
+	calc : var_assign
+		 | expression
 	     | empty
 	'''
 	print(run(p[1]))
@@ -77,8 +81,13 @@ def p_expression(p):
 			   | expression DIVIDE expression
 			   | expression PLUS expression
 			   | expression MINUS expression
+			   | LEFT_PAR expression RIGHT_PAR
 	'''
-	p[0] = (p[2], p[1], p[3])
+	if p[1] == '(' and p[3] == ')':
+		p[0] = p[2]
+
+	else:
+		p[0] = (p[2], p[1], p[3])
 
 
 
