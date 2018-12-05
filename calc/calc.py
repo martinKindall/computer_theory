@@ -13,7 +13,13 @@ tokens = [
 	'MULTIPLY',
 	'EQUALS',
 	'LEFT_PAR',
-	'RIGHT_PAR'
+	'RIGHT_PAR',
+	'LESSTHAN',
+	'LESSTHANEQ',
+	'GREATTHAN',
+	'GREATTHANEQ',
+	'NOTEQUAL',
+	'ISEQUAL'
 ]
 
 t_PLUS = r'\+'
@@ -23,6 +29,12 @@ t_DIVIDE = r'\/'
 t_EQUALS = r'\='
 t_LEFT_PAR = r'\('
 t_RIGHT_PAR = r'\)'
+t_LESSTHAN = r'\>'
+t_LESSTHANEQ = r'\>='
+t_GREATTHAN = r'\<'
+t_GREATTHANEQ = r'\<='
+t_NOTEQUAL = r'\!\='
+t_ISEQUAL = r'\=\='
 
 t_ignore = r' '
 
@@ -81,14 +93,28 @@ def p_expression(p):
 			   | expression DIVIDE expression
 			   | expression PLUS expression
 			   | expression MINUS expression
-			   | LEFT_PAR expression RIGHT_PAR
+			   | expression LESSTHAN expression
+			   | expression LESSTHANEQ expression
+			   | expression GREATTHAN expression
+			   | expression GREATTHANEQ expression
+			   | expression NOTEQUAL expression
+			   | expression ISEQUAL expression
 	'''
-	if p[1] == '(' and p[3] == ')':
-		p[0] = p[2]
+	p[0] = (p[2], p[1], p[3])
 
-	else:
-		p[0] = (p[2], p[1], p[3])
 
+def p_expression_left_right_par(p):
+	'''
+	expression : LEFT_PAR expression RIGHT_PAR
+	'''
+	p[0] = p[2]
+
+
+def p_expression_minus(p):
+	'''
+	expression : MINUS expression
+	'''
+	p[0] = ('-', 0, p[2])
 
 
 def p_expression_int_float(p):
@@ -135,6 +161,18 @@ def run(p):
 			return run(p[1]) / run(p[2])
 		elif p[0] == '=':
 			env[p[1]] = run(p[2])
+		elif p[0] == '==':
+			return run(p[1]) == run(p[2])
+		elif p[0] == '!=':
+			return run(p[1]) != run(p[2])
+		elif p[0] == '<':
+			return run(p[1]) < run(p[2])
+		elif p[0] == '>':
+			return run(p[1]) > run(p[2])
+		elif p[0] == '<=':
+			return run(p[1]) <= run(p[2])
+		elif p[0] == '>=':
+			return run(p[1]) >= run(p[2])
 		elif p[0] == 'var':
 			if p[1] not in env:
 				raise ValueError('Undeclared variable found!')
