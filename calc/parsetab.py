@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'nonassocLESSTHANEQGREATTHANEQnonassocLESSTHANGREATTHANleftPLUSMINUSleftMULTIPLYDIVIDErightUMINUSDIVIDE EQUALS FLOAT GREATTHAN GREATTHANEQ INPUT INT ISEQUAL LEFT_PAR LESSTHAN LESSTHANEQ MINUS MULTIPLY NAME NOTEQUAL PLUS RIGHT_PAR UMINUS\n\tcalc : read\n\t\t | var_assign\n\t\t | expression\n\t     | empty\n\t\n\tvar_assign : NAME EQUALS expression\n\t\n\tread : NAME EQUALS INPUT\n\t\n\texpression : expression MULTIPLY expression\n\t\t\t   | expression DIVIDE expression\n\t\t\t   | expression PLUS expression\n\t\t\t   | expression MINUS expression\n\t\t\t   | expression LESSTHAN expression\n\t\t\t   | expression LESSTHANEQ expression\n\t\t\t   | expression GREATTHAN expression\n\t\t\t   | expression GREATTHANEQ expression\n\t\t\t   | expression NOTEQUAL expression\n\t\t\t   | expression ISEQUAL expression\n\t\n\texpression : LEFT_PAR expression RIGHT_PAR\n\t\n\texpression : UMINUS expression\n\t\n\texpression : INT\n\t\t\t   | FLOAT\n\t\n\texpression : NAME\n\t\n\tempty :\n\t'
+_lr_signature = 'nonassocLESSTHANEQGREATTHANEQnonassocLESSTHANGREATTHANleftPLUSMINUSleftMULTIPLYDIVIDEDIVIDE EQUALS FLOAT GREATTHAN GREATTHANEQ INPUT INT ISEQUAL LEFT_PAR LESSTHAN LESSTHANEQ MINUS MULTIPLY NAME NOTEQUAL PLUS RIGHT_PAR\n\tcalc : read\n\t\t | var_assign\n\t\t | expression\n\t     | empty\n\t\n\tvar_assign : NAME EQUALS expression\n\t\n\tread : NAME EQUALS INPUT\n\t\n\texpression : expression MULTIPLY expression\n\t\t\t   | expression DIVIDE expression\n\t\t\t   | expression PLUS expression\n\t\t\t   | expression MINUS expression\n\t\t\t   | expression LESSTHAN expression\n\t\t\t   | expression LESSTHANEQ expression\n\t\t\t   | expression GREATTHAN expression\n\t\t\t   | expression GREATTHANEQ expression\n\t\t\t   | expression NOTEQUAL expression\n\t\t\t   | expression ISEQUAL expression\n\t\n\texpression : LEFT_PAR expression RIGHT_PAR\n\t\n\texpression : MINUS expression\n\t\n\texpression : INT\n\t\t\t   | FLOAT\n\t\n\texpression : NAME\n\t\n\tempty :\n\t'
     
-_lr_action_items = {'MULTIPLY':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,15,-19,-21,15,-21,-18,15,15,15,15,-7,15,15,15,-8,15,-17,15,]),'$end':([0,1,2,4,6,7,8,9,10,22,23,25,26,27,28,29,30,31,32,33,34,35,36,37,],[-22,-20,-3,-2,-19,-21,0,-4,-1,-21,-18,-9,-16,-14,-11,-7,-12,-15,-10,-8,-13,-17,-5,-6,]),'RIGHT_PAR':([1,6,21,22,23,25,26,27,28,29,30,31,32,33,34,35,],[-20,-19,35,-21,-18,-9,-16,-14,-11,-7,-12,-15,-10,-8,-13,-17,]),'FLOAT':([0,3,5,11,12,13,14,15,16,17,18,19,20,24,],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,]),'PLUS':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,11,-19,-21,11,-21,-18,-9,11,11,11,-7,11,11,-10,-8,11,-17,11,]),'LEFT_PAR':([0,3,5,11,12,13,14,15,16,17,18,19,20,24,],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,]),'LESSTHAN':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,14,-19,-21,14,-21,-18,-9,14,14,None,-7,14,14,-10,-8,None,-17,14,]),'NAME':([0,3,5,11,12,13,14,15,16,17,18,19,20,24,],[7,22,22,22,22,22,22,22,22,22,22,22,22,22,]),'EQUALS':([7,],[24,]),'NOTEQUAL':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,17,-19,-21,17,-21,-18,-9,17,-14,-11,-7,-12,17,-10,-8,-13,-17,17,]),'ISEQUAL':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,12,-19,-21,12,-21,-18,-9,12,-14,-11,-7,-12,12,-10,-8,-13,-17,12,]),'INPUT':([24,],[37,]),'UMINUS':([0,3,5,11,12,13,14,15,16,17,18,19,20,24,],[5,5,5,5,5,5,5,5,5,5,5,5,5,5,]),'DIVIDE':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,19,-19,-21,19,-21,-18,19,19,19,19,-7,19,19,19,-8,19,-17,19,]),'GREATTHAN':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,20,-19,-21,20,-21,-18,-9,20,20,None,-7,20,20,-10,-8,None,-17,20,]),'MINUS':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,18,-19,-21,18,-21,-18,-9,18,18,18,-7,18,18,-10,-8,18,-17,18,]),'INT':([0,3,5,11,12,13,14,15,16,17,18,19,20,24,],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,]),'LESSTHANEQ':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,16,-19,-21,16,-21,-18,-9,16,None,-11,-7,None,16,-10,-8,-13,-17,16,]),'GREATTHANEQ':([1,2,6,7,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,],[-20,13,-19,-21,13,-21,-18,-9,13,None,-11,-7,None,13,-10,-8,-13,-17,13,]),}
+_lr_action_items = {'RIGHT_PAR':([6,7,11,12,13,25,26,27,28,29,30,31,32,33,34,35,],[-20,-19,25,-21,-18,-17,-13,-10,-8,-11,-9,-7,-14,-15,-12,-16,]),'INPUT':([24,],[36,]),'ISEQUAL':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,23,-21,23,-21,-18,-17,-13,-10,-8,-11,-9,-7,-14,23,-12,23,23,]),'DIVIDE':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,16,-21,16,-21,16,-17,16,16,-8,16,16,-7,16,16,16,16,16,]),'GREATTHANEQ':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,20,-21,20,-21,-18,-17,-13,-10,-8,-11,-9,-7,None,20,None,20,20,]),'LESSTHAN':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,17,-21,17,-21,-18,-17,None,-10,-8,None,-9,-7,17,17,17,17,17,]),'MINUS':([0,1,4,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,37,],[4,4,4,-20,-19,15,-21,15,-21,-18,4,4,4,4,4,4,4,4,4,4,4,-17,15,-10,-8,15,-9,-7,15,15,15,15,15,]),'FLOAT':([0,1,4,14,15,16,17,18,19,20,21,22,23,24,],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,]),'INT':([0,1,4,14,15,16,17,18,19,20,21,22,23,24,],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,]),'PLUS':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,18,-21,18,-21,-18,-17,18,-10,-8,18,-9,-7,18,18,18,18,18,]),'LEFT_PAR':([0,1,4,14,15,16,17,18,19,20,21,22,23,24,],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,]),'GREATTHAN':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,14,-21,14,-21,-18,-17,None,-10,-8,None,-9,-7,14,14,14,14,14,]),'NOTEQUAL':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,21,-21,21,-21,-18,-17,-13,-10,-8,-11,-9,-7,-14,21,-12,21,21,]),'$end':([0,2,3,5,6,7,8,9,10,12,13,25,26,27,28,29,30,31,32,33,34,35,36,37,],[-22,-4,-1,-2,-20,-19,0,-3,-21,-21,-18,-17,-13,-10,-8,-11,-9,-7,-14,-15,-12,-16,-6,-5,]),'EQUALS':([10,],[24,]),'LESSTHANEQ':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,22,-21,22,-21,-18,-17,-13,-10,-8,-11,-9,-7,None,22,None,22,22,]),'MULTIPLY':([6,7,9,10,11,12,13,25,26,27,28,29,30,31,32,33,34,35,37,],[-20,-19,19,-21,19,-21,19,-17,19,19,-8,19,19,-7,19,19,19,19,19,]),'NAME':([0,1,4,14,15,16,17,18,19,20,21,22,23,24,],[10,12,12,12,12,12,12,12,12,12,12,12,12,12,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'read':([0,],[10,]),'empty':([0,],[9,]),'calc':([0,],[8,]),'var_assign':([0,],[4,]),'expression':([0,3,5,11,12,13,14,15,16,17,18,19,20,24,],[2,21,23,25,26,27,28,29,30,31,32,33,34,36,]),}
+_lr_goto_items = {'calc':([0,],[8,]),'var_assign':([0,],[5,]),'expression':([0,1,4,14,15,16,17,18,19,20,21,22,23,24,],[9,11,13,26,27,28,29,30,31,32,33,34,35,37,]),'empty':([0,],[2,]),'read':([0,],[3,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,26 +27,26 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> calc","S'",1,None,None,None),
-  ('calc -> read','calc',1,'p_calc','calc.py',98),
-  ('calc -> var_assign','calc',1,'p_calc','calc.py',99),
-  ('calc -> expression','calc',1,'p_calc','calc.py',100),
-  ('calc -> empty','calc',1,'p_calc','calc.py',101),
-  ('var_assign -> NAME EQUALS expression','var_assign',3,'p_var_assign','calc.py',108),
-  ('read -> NAME EQUALS INPUT','read',3,'p_read','calc.py',115),
-  ('expression -> expression MULTIPLY expression','expression',3,'p_expression','calc.py',122),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression','calc.py',123),
-  ('expression -> expression PLUS expression','expression',3,'p_expression','calc.py',124),
-  ('expression -> expression MINUS expression','expression',3,'p_expression','calc.py',125),
-  ('expression -> expression LESSTHAN expression','expression',3,'p_expression','calc.py',126),
-  ('expression -> expression LESSTHANEQ expression','expression',3,'p_expression','calc.py',127),
-  ('expression -> expression GREATTHAN expression','expression',3,'p_expression','calc.py',128),
-  ('expression -> expression GREATTHANEQ expression','expression',3,'p_expression','calc.py',129),
-  ('expression -> expression NOTEQUAL expression','expression',3,'p_expression','calc.py',130),
-  ('expression -> expression ISEQUAL expression','expression',3,'p_expression','calc.py',131),
-  ('expression -> LEFT_PAR expression RIGHT_PAR','expression',3,'p_expression_left_right_par','calc.py',138),
-  ('expression -> UMINUS expression','expression',2,'p_expression_minus','calc.py',145),
-  ('expression -> INT','expression',1,'p_expression_int_float','calc.py',152),
-  ('expression -> FLOAT','expression',1,'p_expression_int_float','calc.py',153),
-  ('expression -> NAME','expression',1,'p_expression_var','calc.py',160),
-  ('empty -> <empty>','empty',0,'p_empty','calc.py',171),
+  ('calc -> read','calc',1,'p_calc','calc.py',95),
+  ('calc -> var_assign','calc',1,'p_calc','calc.py',96),
+  ('calc -> expression','calc',1,'p_calc','calc.py',97),
+  ('calc -> empty','calc',1,'p_calc','calc.py',98),
+  ('var_assign -> NAME EQUALS expression','var_assign',3,'p_var_assign','calc.py',105),
+  ('read -> NAME EQUALS INPUT','read',3,'p_read','calc.py',112),
+  ('expression -> expression MULTIPLY expression','expression',3,'p_expression','calc.py',119),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression','calc.py',120),
+  ('expression -> expression PLUS expression','expression',3,'p_expression','calc.py',121),
+  ('expression -> expression MINUS expression','expression',3,'p_expression','calc.py',122),
+  ('expression -> expression LESSTHAN expression','expression',3,'p_expression','calc.py',123),
+  ('expression -> expression LESSTHANEQ expression','expression',3,'p_expression','calc.py',124),
+  ('expression -> expression GREATTHAN expression','expression',3,'p_expression','calc.py',125),
+  ('expression -> expression GREATTHANEQ expression','expression',3,'p_expression','calc.py',126),
+  ('expression -> expression NOTEQUAL expression','expression',3,'p_expression','calc.py',127),
+  ('expression -> expression ISEQUAL expression','expression',3,'p_expression','calc.py',128),
+  ('expression -> LEFT_PAR expression RIGHT_PAR','expression',3,'p_expression_left_right_par','calc.py',135),
+  ('expression -> MINUS expression','expression',2,'p_expression_minus','calc.py',142),
+  ('expression -> INT','expression',1,'p_expression_int_float','calc.py',149),
+  ('expression -> FLOAT','expression',1,'p_expression_int_float','calc.py',150),
+  ('expression -> NAME','expression',1,'p_expression_var','calc.py',157),
+  ('empty -> <empty>','empty',0,'p_empty','calc.py',168),
 ]

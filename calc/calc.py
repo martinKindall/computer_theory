@@ -9,7 +9,6 @@ tokens = [
 	'NAME',
 	'PLUS',
 	'MINUS',
-	'UMINUS',
 	'DIVIDE',
 	'MULTIPLY',
 	'EQUALS',
@@ -26,7 +25,6 @@ tokens = [
 
 t_PLUS = r'\+'
 t_MINUS = r'\-'
-t_UMINUS = r'\-'
 t_MULTIPLY = r'\*'
 t_DIVIDE = r'\/'
 t_EQUALS = r'\='
@@ -90,7 +88,6 @@ precedence = (
 	('nonassoc', 'LESSTHAN', 'GREATTHAN'),
 	('left', 'PLUS', 'MINUS'),
 	('left', 'MULTIPLY', 'DIVIDE'),
-	('right', 'UMINUS'),
 )
 
 def p_calc(p):
@@ -142,7 +139,7 @@ def p_expression_left_right_par(p):
 
 def p_expression_minus(p):
 	'''
-	expression : UMINUS expression
+	expression : MINUS expression
 	'''
 	p[0] = ('-', 0, p[2])
 
