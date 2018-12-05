@@ -4,11 +4,12 @@ import sys
 
 
 tokens = [
-	'INT',
 	'FLOAT',
+	'INT',
 	'NAME',
 	'PLUS',
 	'MINUS',
+	'UMINUS',
 	'DIVIDE',
 	'MULTIPLY',
 	'EQUALS',
@@ -19,16 +20,16 @@ tokens = [
 	'GREATTHAN',
 	'GREATTHANEQ',
 	'NOTEQUAL',
-	'ISEQUAL'
+	'ISEQUAL',
+	'INPUT'
 ]
 
 t_PLUS = r'\+'
 t_MINUS = r'\-'
+t_UMINUS = r'\-'
 t_MULTIPLY = r'\*'
 t_DIVIDE = r'\/'
 t_EQUALS = r'\='
-t_LEFT_PAR = r'\('
-t_RIGHT_PAR = r'\)'
 t_LESSTHAN = r'\>'
 t_LESSTHANEQ = r'\>='
 t_GREATTHAN = r'\<'
@@ -51,6 +52,24 @@ def t_INT(t):
 	return t
 
 
+def t_INPUT(t):
+	r'read\(\)'
+	t.type = 'INPUT'
+	return t
+
+
+def t_LEFT_PAR(t):
+	r'\('
+	t.type = 'LEFT_PAR'
+	return t
+
+
+def t_RIGHT_PAR(t):
+	r'\)'
+	t.type = 'RIGHT_PAR'
+	return t
+
+
 def t_NAME(t):
 	r'[a-z0-9]+'
 	t.type = 'NAME'
@@ -67,13 +86,17 @@ lexer = lex.lex()
 lexer.input("abc = 123.456")
 
 precedence = (
+	('nonassoc', 'LESSTHANEQ', 'GREATTHANEQ'),
+	('nonassoc', 'LESSTHAN', 'GREATTHAN'),
 	('left', 'PLUS', 'MINUS'),
-	('left', 'MULTIPLY', 'DIVIDE')
+	('left', 'MULTIPLY', 'DIVIDE'),
+	('right', 'UMINUS'),
 )
 
 def p_calc(p):
 	'''
-	calc : var_assign
+	calc : read
+		 | var_assign
 		 | expression
 	     | empty
 	'''
@@ -85,6 +108,13 @@ def p_var_assign(p):
 	var_assign : NAME EQUALS expression
 	'''
 	p[0] = ('=', p[1], p[3])
+
+
+def p_read(p):
+	'''
+	read : NAME EQUALS INPUT
+	'''
+	p[0] = ('=', p[1], int(input()))
 
 
 def p_expression(p):
@@ -112,7 +142,7 @@ def p_expression_left_right_par(p):
 
 def p_expression_minus(p):
 	'''
-	expression : MINUS expression
+	expression : UMINUS expression
 	'''
 	p[0] = ('-', 0, p[2])
 
@@ -132,8 +162,8 @@ def p_expression_var(p):
 	p[0] = ('var', p[1])
 
 
-def p_error(p):
-	print("Syntax error found!")
+# def p_error(p):
+	# print("Syntax error found!")
 
 
 def p_empty(p):
