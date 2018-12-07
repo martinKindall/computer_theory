@@ -1,3 +1,6 @@
+
+import pdb
+
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
@@ -21,7 +24,10 @@ tokens = [
 	'NOTEQUAL',
 	'ISEQUAL',
 	'INPUT',
-	'PRINT'
+	'PRINT',
+	'IF',
+	'THEN',
+	'ELSE'
 ]
 
 t_PLUS = r'\+'
@@ -51,15 +57,21 @@ def t_INT(t):
 	return t
 
 
-def t_INPUT(t):
-	r'read\(\)'
-	t.type = 'INPUT'
+def t_IF(t):
+	r'if'
+	t.type = 'IF'
 	return t
 
 
-def t_PRINT(t):
-	r'print'
-	t.type = 'PRINT'
+def t_THEN(t):
+	r'then'
+	t.type = 'THEN'
+	return t
+
+
+def t_ELSE(t):
+	r'else'
+	t.type = 'ELSE'
 	return t
 
 
@@ -72,6 +84,18 @@ def t_LEFT_PAR(t):
 def t_RIGHT_PAR(t):
 	r'\)'
 	t.type = 'RIGHT_PAR'
+	return t
+
+
+def t_INPUT(t):
+	r'read\(\)'
+	t.type = 'INPUT'
+	return t
+
+
+def t_PRINT(t):
+	r'print'
+	t.type = 'PRINT'
 	return t
 
 
@@ -88,24 +112,41 @@ def t_error(t):
 
 lexer = lex.lex()  
 
-lexer.input("abc = 123.456")
 
 precedence = (
 	('nonassoc', 'LESSTHANEQ', 'GREATTHANEQ'),
 	('nonassoc', 'LESSTHAN', 'GREATTHAN'),
 	('left', 'PLUS', 'MINUS'),
 	('left', 'MULTIPLY', 'DIVIDE'),
+	('right', 'IF'),
+	('left', 'ELSE')
 )
 
 def p_calc(p):
 	'''
-	calc : read
-		 | print 
+	calc : if_else
+		 | if
+		 | read
+		 | print
 		 | var_assign
 		 | expression
 	     | empty
 	'''
 	print(run(p[1]))
+
+
+def p_if_else(p):
+	'''
+	if_else : IF LEFT_PAR expression RIGHT_PAR THEN calc ELSE calc
+	'''
+	p[0] = ('if_else', p[3], p[6], p[8])
+
+
+def p_if(p):
+	'''
+	if : IF LEFT_PAR expression RIGHT_PAR THEN calc
+	'''
+	p[0] = ('if', p[3], p[6])
 
 
 def p_var_assign(p):
@@ -191,7 +232,6 @@ env = {}
 
 def run(p):
 	global env
-	
 	if type(p) == tuple:
 		if p[0] == '+':
 			return run(p[1]) + run(p[2])
@@ -217,6 +257,14 @@ def run(p):
 			return run(p[1]) >= run(p[2])
 		elif p[0] == 'print':
 			print(run(p[1]))
+		elif p[0] == 'if':
+			if run(p[1]):
+				run(p[2])
+		elif p[0] == 'if_else':
+			if run(p[1]):
+				run(p[2])
+			else:
+				run(p[3])
 		elif p[0] == 'var':
 			if p[1] not in env:
 				raise ValueError('Undeclared variable found!')
