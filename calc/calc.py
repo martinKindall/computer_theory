@@ -20,7 +20,8 @@ tokens = [
 	'GREATTHANEQ',
 	'NOTEQUAL',
 	'ISEQUAL',
-	'INPUT'
+	'INPUT',
+	'PRINT'
 ]
 
 t_PLUS = r'\+'
@@ -53,6 +54,12 @@ def t_INT(t):
 def t_INPUT(t):
 	r'read\(\)'
 	t.type = 'INPUT'
+	return t
+
+
+def t_PRINT(t):
+	r'print'
+	t.type = 'PRINT'
 	return t
 
 
@@ -93,6 +100,7 @@ precedence = (
 def p_calc(p):
 	'''
 	calc : read
+		 | print 
 		 | var_assign
 		 | expression
 	     | empty
@@ -112,6 +120,13 @@ def p_read(p):
 	read : NAME EQUALS INPUT
 	'''
 	p[0] = ('=', p[1], int(input()))
+
+
+def p_print(p):
+	'''
+	print : PRINT LEFT_PAR expression RIGHT_PAR
+	'''
+	p[0] = ('print', p[3])
 
 
 def p_expression(p):
@@ -200,6 +215,8 @@ def run(p):
 			return run(p[1]) <= run(p[2])
 		elif p[0] == '>=':
 			return run(p[1]) >= run(p[2])
+		elif p[0] == 'print':
+			print(run(p[1]))
 		elif p[0] == 'var':
 			if p[1] not in env:
 				raise ValueError('Undeclared variable found!')
