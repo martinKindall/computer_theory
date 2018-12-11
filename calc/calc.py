@@ -137,16 +137,30 @@ def p_calc(p):
 
 def p_if_else(p):
 	'''
-	if_else : IF LEFT_PAR expression RIGHT_PAR THEN calc ELSE calc
+	if_else : IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
 	'''
 	p[0] = ('if_else', p[3], p[6], p[8])
 
 
 def p_if(p):
 	'''
-	if : IF LEFT_PAR expression RIGHT_PAR THEN calc
+	if : IF LEFT_PAR expression RIGHT_PAR then_statement
 	'''
-	p[0] = ('if', p[3], p[6])
+	p[0] = ('if', p[3], p[5])
+
+
+def p_else_statement(p):
+	'''
+	else_statement : ELSE var_assign
+	'''
+	p[0] = p[2]
+
+
+def p_then_statement(p):
+	'''
+	then_statement : THEN var_assign
+	'''
+	p[0] = p[2]
 
 
 def p_var_assign(p):
