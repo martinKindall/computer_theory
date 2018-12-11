@@ -139,7 +139,7 @@ def p_if_else(p):
 	'''
 	if_else : IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
 	'''
-	p[0] = ('if_else', p[3], p[6], p[8])
+	p[0] = ('if_else', p[3], p[5], p[6])
 
 
 def p_if(p):
