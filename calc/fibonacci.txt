@@ -1,0 +1,17 @@
+n = read();
+f1 = 1;
+
+if (n <= 1) then print(n);
+
+else {
+	f2 = 1;
+	while(n > 2)
+	do {
+		f = f1 + f2;
+		f1 = f2;
+		f2 = f;
+		n = n - 1;
+	}
+
+	print(f2);
+}

@@ -167,6 +167,7 @@ def p_calc(p):
 		 | print TERM
 		 | var_assign TERM
 		 | expression
+		 | calc_2
 	     | empty
 	'''
 	print(run(p[1]))
@@ -360,7 +361,7 @@ def run(p):
 		elif p[0] == 'while':
 			while run(p[1]):
 				run(p[2])
-				
+
 		elif p[0] == 'subtasks':
 			run(p[1])
 			run(p[2])
@@ -372,15 +373,43 @@ def run(p):
 				return env[p[1]]
 	else:
 		return p
-	
 
-while True:
-	try:
-		s = input('>> ')
-	except EOFError:
-		break
+
+params = sys.argv
+
+# pdb.set_trace()
+
+if len(params) == 1:
+	while True:
+		try:
+			s = input('>> ')
+		except EOFError:
+			break
+
+		try:
+			parser.parse(s)
+		except ValueError as e:
+			print(e)
+
+if len(params) == 2:
+
+	filename = params[1]
+	file = open(filename, 'r')
+	line = file.readline()
+	code = ""
+
+	while line != "":
+
+		code += line.replace("\n", "").replace("\t", "")
+		line = file.readline()
+
+	# pdb.set_trace()
 
 	try:
-		parser.parse(s)
+		parser.parse(code)
 	except ValueError as e:
-		print(e)
+		print(e)	
+
+else:
+	print("Uso: calc.py <filename.txt>")
+	print("El parametro filename es opcional")
