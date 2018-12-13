@@ -30,7 +30,9 @@ tokens = [
 	'ELSE',
 	'WHILE',
 	'DO',
-	'TERM'
+	'TERM',
+	'RIGHT_KEY',
+	'LEFT_KEY'
 ]
 
 t_PLUS = r'\+'
@@ -96,6 +98,18 @@ def t_TERM(t):
 	return t
 
 
+def t_LEFT_KEY(t):
+	r'\{'
+	t.type = 'LEFT_KEY'
+	return t
+
+
+def t_RIGHT_KEY(t):
+	r'\}'
+	t.type = 'RIGHT_KEY'
+	return t
+
+
 def t_LEFT_PAR(t):
 	r'\('
 	t.type = 'LEFT_PAR'
@@ -139,9 +153,10 @@ precedence = (
 	('nonassoc', 'LESSTHAN', 'GREATTHAN'),
 	('left', 'PLUS', 'MINUS'),
 	('left', 'MULTIPLY', 'DIVIDE'),
-	('right', 'IF'),
+	('left', 'IF'),
 	('left', 'ELSE')
 )
+
 
 def p_calc(p):
 	'''
@@ -173,14 +188,14 @@ def p_if(p):
 
 def p_then_statement(p):
 	'''
-	then_statement : THEN var_assign TERM
+	then_statement : THEN calc_2 
 	'''
 	p[0] = p[2]
 
 
 def p_else_statement(p):
 	'''
-	else_statement : ELSE var_assign TERM
+	else_statement : ELSE calc_2
 	'''
 	p[0] = p[2]
 
@@ -197,6 +212,21 @@ def p_do_statement(p):
 	do_statement : DO print
 	'''
 	p[0] = p[2]
+
+
+def p_calc_2(p):
+	'''
+	calc_2 : if_else 
+		 | if 
+		 | while_do 
+		 | read TERM
+		 | print TERM
+		 | var_assign TERM
+		 | expression
+		 | LEFT_KEY calc_2 RIGHT_KEY
+		 | calc_2 calc_2
+	'''
+	p[0] = p[1]
 
 
 def p_var_assign(p):
