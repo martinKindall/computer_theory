@@ -16,7 +16,7 @@ Rule 10    if -> IF LEFT_PAR expression RIGHT_PAR then_statement
 Rule 11    then_statement -> THEN calc_2
 Rule 12    else_statement -> ELSE calc_2
 Rule 13    while_do -> WHILE LEFT_PAR expression RIGHT_PAR do_statement
-Rule 14    do_statement -> DO print
+Rule 14    do_statement -> DO calc_2
 Rule 15    calc_2 -> if_else
 Rule 16    calc_2 -> if
 Rule 17    calc_2 -> while_do
@@ -79,14 +79,14 @@ error                :
 Nonterminals, with rules where they appear
 
 calc                 : 0
-calc_2               : 11 12 22 23 23
+calc_2               : 11 12 14 22 23 23
 do_statement         : 13
 else_statement       : 9
 empty                : 8
 expression           : 7 9 10 13 21 24 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 38
 if                   : 2 16
 if_else              : 1 15
-print                : 5 14 19
+print                : 5 19
 read                 : 4 18
 then_statement       : 9 10
 var_assign           : 6 20
@@ -128,68 +128,133 @@ state 0
     (41) expression -> . NAME
     (42) empty -> .
 
-    IF              shift and go to state 8
-    WHILE           shift and go to state 16
-    NAME            shift and go to state 11
-    PRINT           shift and go to state 1
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
     $end            reduce using rule 42 (empty -> .)
 
-    if                             shift and go to state 6
-    if_else                        shift and go to state 7
-    while_do                       shift and go to state 9
-    empty                          shift and go to state 2
-    var_assign                     shift and go to state 12
-    read                           shift and go to state 13
-    print                          shift and go to state 5
-    calc                           shift and go to state 15
-    expression                     shift and go to state 17
+    if_else                        shift and go to state 9
+    calc                           shift and go to state 11
+    if                             shift and go to state 4
+    var_assign                     shift and go to state 14
+    read                           shift and go to state 3
+    print                          shift and go to state 2
+    while_do                       shift and go to state 5
+    empty                          shift and go to state 17
+    expression                     shift and go to state 7
 
 state 1
 
-    (26) print -> PRINT . LEFT_PAR expression RIGHT_PAR
+    (39) expression -> INT .
 
-    LEFT_PAR        shift and go to state 18
+    MULTIPLY        reduce using rule 39 (expression -> INT .)
+    DIVIDE          reduce using rule 39 (expression -> INT .)
+    PLUS            reduce using rule 39 (expression -> INT .)
+    MINUS           reduce using rule 39 (expression -> INT .)
+    LESSTHAN        reduce using rule 39 (expression -> INT .)
+    LESSTHANEQ      reduce using rule 39 (expression -> INT .)
+    GREATTHAN       reduce using rule 39 (expression -> INT .)
+    GREATTHANEQ     reduce using rule 39 (expression -> INT .)
+    NOTEQUAL        reduce using rule 39 (expression -> INT .)
+    ISEQUAL         reduce using rule 39 (expression -> INT .)
+    $end            reduce using rule 39 (expression -> INT .)
+    RIGHT_PAR       reduce using rule 39 (expression -> INT .)
+    TERM            reduce using rule 39 (expression -> INT .)
+    LEFT_KEY        reduce using rule 39 (expression -> INT .)
+    IF              reduce using rule 39 (expression -> INT .)
+    WHILE           reduce using rule 39 (expression -> INT .)
+    NAME            reduce using rule 39 (expression -> INT .)
+    PRINT           reduce using rule 39 (expression -> INT .)
+    LEFT_PAR        reduce using rule 39 (expression -> INT .)
+    INT             reduce using rule 39 (expression -> INT .)
+    FLOAT           reduce using rule 39 (expression -> INT .)
+    ELSE            reduce using rule 39 (expression -> INT .)
+    RIGHT_KEY       reduce using rule 39 (expression -> INT .)
 
 
 state 2
 
-    (8) calc -> empty .
+    (5) calc -> print . TERM
 
-    $end            reduce using rule 8 (calc -> empty .)
+    TERM            shift and go to state 18
 
 
 state 3
 
-    (38) expression -> MINUS . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
+    (4) calc -> read . TERM
 
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
+    TERM            shift and go to state 19
 
-    expression                     shift and go to state 19
 
 state 4
+
+    (2) calc -> if .
+
+    $end            reduce using rule 2 (calc -> if .)
+
+
+state 5
+
+    (3) calc -> while_do .
+
+    $end            reduce using rule 3 (calc -> while_do .)
+
+
+state 6
+
+    (9) if_else -> IF . LEFT_PAR expression RIGHT_PAR then_statement else_statement
+    (10) if -> IF . LEFT_PAR expression RIGHT_PAR then_statement
+
+    LEFT_PAR        shift and go to state 20
+
+
+state 7
+
+    (7) calc -> expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    $end            reduce using rule 7 (calc -> expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
+
+
+state 8
+
+    (13) while_do -> WHILE . LEFT_PAR expression RIGHT_PAR do_statement
+
+    LEFT_PAR        shift and go to state 31
+
+
+state 9
+
+    (1) calc -> if_else .
+
+    $end            reduce using rule 1 (calc -> if_else .)
+
+
+state 10
 
     (37) expression -> LEFT_PAR . expression RIGHT_PAR
     (27) expression -> . expression MULTIPLY expression
@@ -208,195 +273,30 @@ state 4
     (40) expression -> . FLOAT
     (41) expression -> . NAME
 
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
 
-    expression                     shift and go to state 21
-
-state 5
-
-    (5) calc -> print . TERM
-
-    TERM            shift and go to state 22
-
-
-state 6
-
-    (2) calc -> if .
-
-    $end            reduce using rule 2 (calc -> if .)
-
-
-state 7
-
-    (1) calc -> if_else .
-
-    $end            reduce using rule 1 (calc -> if_else .)
-
-
-state 8
-
-    (9) if_else -> IF . LEFT_PAR expression RIGHT_PAR then_statement else_statement
-    (10) if -> IF . LEFT_PAR expression RIGHT_PAR then_statement
-
-    LEFT_PAR        shift and go to state 23
-
-
-state 9
-
-    (3) calc -> while_do .
-
-    $end            reduce using rule 3 (calc -> while_do .)
-
-
-state 10
-
-    (39) expression -> INT .
-
-    RIGHT_PAR       reduce using rule 39 (expression -> INT .)
-    MULTIPLY        reduce using rule 39 (expression -> INT .)
-    DIVIDE          reduce using rule 39 (expression -> INT .)
-    PLUS            reduce using rule 39 (expression -> INT .)
-    MINUS           reduce using rule 39 (expression -> INT .)
-    LESSTHAN        reduce using rule 39 (expression -> INT .)
-    LESSTHANEQ      reduce using rule 39 (expression -> INT .)
-    GREATTHAN       reduce using rule 39 (expression -> INT .)
-    GREATTHANEQ     reduce using rule 39 (expression -> INT .)
-    NOTEQUAL        reduce using rule 39 (expression -> INT .)
-    ISEQUAL         reduce using rule 39 (expression -> INT .)
-    $end            reduce using rule 39 (expression -> INT .)
-    TERM            reduce using rule 39 (expression -> INT .)
-    LEFT_KEY        reduce using rule 39 (expression -> INT .)
-    IF              reduce using rule 39 (expression -> INT .)
-    WHILE           reduce using rule 39 (expression -> INT .)
-    NAME            reduce using rule 39 (expression -> INT .)
-    PRINT           reduce using rule 39 (expression -> INT .)
-    LEFT_PAR        reduce using rule 39 (expression -> INT .)
-    INT             reduce using rule 39 (expression -> INT .)
-    FLOAT           reduce using rule 39 (expression -> INT .)
-    ELSE            reduce using rule 39 (expression -> INT .)
-    RIGHT_KEY       reduce using rule 39 (expression -> INT .)
-
+    expression                     shift and go to state 32
 
 state 11
-
-    (25) read -> NAME . EQUALS INPUT
-    (24) var_assign -> NAME . EQUALS expression
-    (41) expression -> NAME .
-
-    EQUALS          shift and go to state 24
-    MULTIPLY        reduce using rule 41 (expression -> NAME .)
-    DIVIDE          reduce using rule 41 (expression -> NAME .)
-    PLUS            reduce using rule 41 (expression -> NAME .)
-    MINUS           reduce using rule 41 (expression -> NAME .)
-    LESSTHAN        reduce using rule 41 (expression -> NAME .)
-    LESSTHANEQ      reduce using rule 41 (expression -> NAME .)
-    GREATTHAN       reduce using rule 41 (expression -> NAME .)
-    GREATTHANEQ     reduce using rule 41 (expression -> NAME .)
-    NOTEQUAL        reduce using rule 41 (expression -> NAME .)
-    ISEQUAL         reduce using rule 41 (expression -> NAME .)
-    LEFT_KEY        reduce using rule 41 (expression -> NAME .)
-    IF              reduce using rule 41 (expression -> NAME .)
-    WHILE           reduce using rule 41 (expression -> NAME .)
-    NAME            reduce using rule 41 (expression -> NAME .)
-    PRINT           reduce using rule 41 (expression -> NAME .)
-    LEFT_PAR        reduce using rule 41 (expression -> NAME .)
-    INT             reduce using rule 41 (expression -> NAME .)
-    FLOAT           reduce using rule 41 (expression -> NAME .)
-    RIGHT_KEY       reduce using rule 41 (expression -> NAME .)
-    ELSE            reduce using rule 41 (expression -> NAME .)
-    $end            reduce using rule 41 (expression -> NAME .)
-
-
-state 12
-
-    (6) calc -> var_assign . TERM
-
-    TERM            shift and go to state 25
-
-
-state 13
-
-    (4) calc -> read . TERM
-
-    TERM            shift and go to state 26
-
-
-state 14
-
-    (40) expression -> FLOAT .
-
-    RIGHT_PAR       reduce using rule 40 (expression -> FLOAT .)
-    MULTIPLY        reduce using rule 40 (expression -> FLOAT .)
-    DIVIDE          reduce using rule 40 (expression -> FLOAT .)
-    PLUS            reduce using rule 40 (expression -> FLOAT .)
-    MINUS           reduce using rule 40 (expression -> FLOAT .)
-    LESSTHAN        reduce using rule 40 (expression -> FLOAT .)
-    LESSTHANEQ      reduce using rule 40 (expression -> FLOAT .)
-    GREATTHAN       reduce using rule 40 (expression -> FLOAT .)
-    GREATTHANEQ     reduce using rule 40 (expression -> FLOAT .)
-    NOTEQUAL        reduce using rule 40 (expression -> FLOAT .)
-    ISEQUAL         reduce using rule 40 (expression -> FLOAT .)
-    $end            reduce using rule 40 (expression -> FLOAT .)
-    TERM            reduce using rule 40 (expression -> FLOAT .)
-    LEFT_KEY        reduce using rule 40 (expression -> FLOAT .)
-    IF              reduce using rule 40 (expression -> FLOAT .)
-    WHILE           reduce using rule 40 (expression -> FLOAT .)
-    NAME            reduce using rule 40 (expression -> FLOAT .)
-    PRINT           reduce using rule 40 (expression -> FLOAT .)
-    LEFT_PAR        reduce using rule 40 (expression -> FLOAT .)
-    INT             reduce using rule 40 (expression -> FLOAT .)
-    FLOAT           reduce using rule 40 (expression -> FLOAT .)
-    ELSE            reduce using rule 40 (expression -> FLOAT .)
-    RIGHT_KEY       reduce using rule 40 (expression -> FLOAT .)
-
-
-state 15
 
     (0) S' -> calc .
 
 
 
-state 16
+state 12
 
-    (13) while_do -> WHILE . LEFT_PAR expression RIGHT_PAR do_statement
+    (26) print -> PRINT . LEFT_PAR expression RIGHT_PAR
 
-    LEFT_PAR        shift and go to state 27
-
-
-state 17
-
-    (7) calc -> expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
-
-    $end            reduce using rule 7 (calc -> expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
+    LEFT_PAR        shift and go to state 34
 
 
-state 18
+state 13
 
-    (26) print -> PRINT LEFT_PAR . expression RIGHT_PAR
+    (38) expression -> MINUS . expression
     (27) expression -> . expression MULTIPLY expression
     (28) expression -> . expression DIVIDE expression
     (29) expression -> . expression PLUS expression
@@ -413,69 +313,28 @@ state 18
     (40) expression -> . FLOAT
     (41) expression -> . NAME
 
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
 
-    expression                     shift and go to state 38
+    expression                     shift and go to state 35
 
-state 19
+state 14
 
-    (38) expression -> MINUS expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
+    (6) calc -> var_assign . TERM
 
-    RIGHT_PAR       reduce using rule 38 (expression -> MINUS expression .)
-    PLUS            reduce using rule 38 (expression -> MINUS expression .)
-    MINUS           reduce using rule 38 (expression -> MINUS expression .)
-    LESSTHAN        reduce using rule 38 (expression -> MINUS expression .)
-    LESSTHANEQ      reduce using rule 38 (expression -> MINUS expression .)
-    GREATTHAN       reduce using rule 38 (expression -> MINUS expression .)
-    GREATTHANEQ     reduce using rule 38 (expression -> MINUS expression .)
-    NOTEQUAL        reduce using rule 38 (expression -> MINUS expression .)
-    ISEQUAL         reduce using rule 38 (expression -> MINUS expression .)
-    $end            reduce using rule 38 (expression -> MINUS expression .)
-    TERM            reduce using rule 38 (expression -> MINUS expression .)
-    LEFT_KEY        reduce using rule 38 (expression -> MINUS expression .)
-    IF              reduce using rule 38 (expression -> MINUS expression .)
-    WHILE           reduce using rule 38 (expression -> MINUS expression .)
-    NAME            reduce using rule 38 (expression -> MINUS expression .)
-    PRINT           reduce using rule 38 (expression -> MINUS expression .)
-    LEFT_PAR        reduce using rule 38 (expression -> MINUS expression .)
-    INT             reduce using rule 38 (expression -> MINUS expression .)
-    FLOAT           reduce using rule 38 (expression -> MINUS expression .)
-    ELSE            reduce using rule 38 (expression -> MINUS expression .)
-    RIGHT_KEY       reduce using rule 38 (expression -> MINUS expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-
-  ! MULTIPLY        [ reduce using rule 38 (expression -> MINUS expression .) ]
-  ! DIVIDE          [ reduce using rule 38 (expression -> MINUS expression .) ]
-  ! PLUS            [ shift and go to state 30 ]
-  ! MINUS           [ shift and go to state 31 ]
-  ! LESSTHAN        [ shift and go to state 34 ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHAN       [ shift and go to state 35 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
+    TERM            shift and go to state 36
 
 
-state 20
+state 15
 
+    (25) read -> NAME . EQUALS INPUT
+    (24) var_assign -> NAME . EQUALS expression
     (41) expression -> NAME .
 
-    RIGHT_PAR       reduce using rule 41 (expression -> NAME .)
+    EQUALS          shift and go to state 37
     MULTIPLY        reduce using rule 41 (expression -> NAME .)
     DIVIDE          reduce using rule 41 (expression -> NAME .)
     PLUS            reduce using rule 41 (expression -> NAME .)
@@ -486,8 +345,6 @@ state 20
     GREATTHANEQ     reduce using rule 41 (expression -> NAME .)
     NOTEQUAL        reduce using rule 41 (expression -> NAME .)
     ISEQUAL         reduce using rule 41 (expression -> NAME .)
-    $end            reduce using rule 41 (expression -> NAME .)
-    TERM            reduce using rule 41 (expression -> NAME .)
     LEFT_KEY        reduce using rule 41 (expression -> NAME .)
     IF              reduce using rule 41 (expression -> NAME .)
     WHILE           reduce using rule 41 (expression -> NAME .)
@@ -497,44 +354,61 @@ state 20
     INT             reduce using rule 41 (expression -> NAME .)
     FLOAT           reduce using rule 41 (expression -> NAME .)
     ELSE            reduce using rule 41 (expression -> NAME .)
+    $end            reduce using rule 41 (expression -> NAME .)
     RIGHT_KEY       reduce using rule 41 (expression -> NAME .)
 
 
-state 21
+state 16
 
-    (37) expression -> LEFT_PAR expression . RIGHT_PAR
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
+    (40) expression -> FLOAT .
 
-    RIGHT_PAR       shift and go to state 39
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
+    MULTIPLY        reduce using rule 40 (expression -> FLOAT .)
+    DIVIDE          reduce using rule 40 (expression -> FLOAT .)
+    PLUS            reduce using rule 40 (expression -> FLOAT .)
+    MINUS           reduce using rule 40 (expression -> FLOAT .)
+    LESSTHAN        reduce using rule 40 (expression -> FLOAT .)
+    LESSTHANEQ      reduce using rule 40 (expression -> FLOAT .)
+    GREATTHAN       reduce using rule 40 (expression -> FLOAT .)
+    GREATTHANEQ     reduce using rule 40 (expression -> FLOAT .)
+    NOTEQUAL        reduce using rule 40 (expression -> FLOAT .)
+    ISEQUAL         reduce using rule 40 (expression -> FLOAT .)
+    $end            reduce using rule 40 (expression -> FLOAT .)
+    RIGHT_PAR       reduce using rule 40 (expression -> FLOAT .)
+    TERM            reduce using rule 40 (expression -> FLOAT .)
+    LEFT_KEY        reduce using rule 40 (expression -> FLOAT .)
+    IF              reduce using rule 40 (expression -> FLOAT .)
+    WHILE           reduce using rule 40 (expression -> FLOAT .)
+    NAME            reduce using rule 40 (expression -> FLOAT .)
+    PRINT           reduce using rule 40 (expression -> FLOAT .)
+    LEFT_PAR        reduce using rule 40 (expression -> FLOAT .)
+    INT             reduce using rule 40 (expression -> FLOAT .)
+    FLOAT           reduce using rule 40 (expression -> FLOAT .)
+    ELSE            reduce using rule 40 (expression -> FLOAT .)
+    RIGHT_KEY       reduce using rule 40 (expression -> FLOAT .)
 
 
-state 22
+state 17
+
+    (8) calc -> empty .
+
+    $end            reduce using rule 8 (calc -> empty .)
+
+
+state 18
 
     (5) calc -> print TERM .
 
     $end            reduce using rule 5 (calc -> print TERM .)
 
 
-state 23
+state 19
+
+    (4) calc -> read TERM .
+
+    $end            reduce using rule 4 (calc -> read TERM .)
+
+
+state 20
 
     (9) if_else -> IF LEFT_PAR . expression RIGHT_PAR then_statement else_statement
     (10) if -> IF LEFT_PAR . expression RIGHT_PAR then_statement
@@ -554,15 +428,452 @@ state 23
     (40) expression -> . FLOAT
     (41) expression -> . NAME
 
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 38
+
+state 21
+
+    (31) expression -> expression LESSTHAN . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 39
+
+state 22
+
+    (35) expression -> expression NOTEQUAL . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
 
     expression                     shift and go to state 40
 
+state 23
+
+    (27) expression -> expression MULTIPLY . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 41
+
 state 24
+
+    (29) expression -> expression PLUS . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 42
+
+state 25
+
+    (32) expression -> expression LESSTHANEQ . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 43
+
+state 26
+
+    (30) expression -> expression MINUS . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 44
+
+state 27
+
+    (34) expression -> expression GREATTHANEQ . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 45
+
+state 28
+
+    (33) expression -> expression GREATTHAN . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 46
+
+state 29
+
+    (28) expression -> expression DIVIDE . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 47
+
+state 30
+
+    (36) expression -> expression ISEQUAL . expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 48
+
+state 31
+
+    (13) while_do -> WHILE LEFT_PAR . expression RIGHT_PAR do_statement
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 49
+
+state 32
+
+    (37) expression -> LEFT_PAR expression . RIGHT_PAR
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    RIGHT_PAR       shift and go to state 50
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
+
+
+state 33
+
+    (41) expression -> NAME .
+
+    MULTIPLY        reduce using rule 41 (expression -> NAME .)
+    DIVIDE          reduce using rule 41 (expression -> NAME .)
+    PLUS            reduce using rule 41 (expression -> NAME .)
+    MINUS           reduce using rule 41 (expression -> NAME .)
+    LESSTHAN        reduce using rule 41 (expression -> NAME .)
+    LESSTHANEQ      reduce using rule 41 (expression -> NAME .)
+    GREATTHAN       reduce using rule 41 (expression -> NAME .)
+    GREATTHANEQ     reduce using rule 41 (expression -> NAME .)
+    NOTEQUAL        reduce using rule 41 (expression -> NAME .)
+    ISEQUAL         reduce using rule 41 (expression -> NAME .)
+    $end            reduce using rule 41 (expression -> NAME .)
+    RIGHT_PAR       reduce using rule 41 (expression -> NAME .)
+    TERM            reduce using rule 41 (expression -> NAME .)
+    LEFT_KEY        reduce using rule 41 (expression -> NAME .)
+    IF              reduce using rule 41 (expression -> NAME .)
+    WHILE           reduce using rule 41 (expression -> NAME .)
+    NAME            reduce using rule 41 (expression -> NAME .)
+    PRINT           reduce using rule 41 (expression -> NAME .)
+    LEFT_PAR        reduce using rule 41 (expression -> NAME .)
+    INT             reduce using rule 41 (expression -> NAME .)
+    FLOAT           reduce using rule 41 (expression -> NAME .)
+    ELSE            reduce using rule 41 (expression -> NAME .)
+    RIGHT_KEY       reduce using rule 41 (expression -> NAME .)
+
+
+state 34
+
+    (26) print -> PRINT LEFT_PAR . expression RIGHT_PAR
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
+
+    expression                     shift and go to state 51
+
+state 35
+
+    (38) expression -> MINUS expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    PLUS            reduce using rule 38 (expression -> MINUS expression .)
+    MINUS           reduce using rule 38 (expression -> MINUS expression .)
+    LESSTHAN        reduce using rule 38 (expression -> MINUS expression .)
+    LESSTHANEQ      reduce using rule 38 (expression -> MINUS expression .)
+    GREATTHAN       reduce using rule 38 (expression -> MINUS expression .)
+    GREATTHANEQ     reduce using rule 38 (expression -> MINUS expression .)
+    NOTEQUAL        reduce using rule 38 (expression -> MINUS expression .)
+    ISEQUAL         reduce using rule 38 (expression -> MINUS expression .)
+    $end            reduce using rule 38 (expression -> MINUS expression .)
+    RIGHT_PAR       reduce using rule 38 (expression -> MINUS expression .)
+    TERM            reduce using rule 38 (expression -> MINUS expression .)
+    LEFT_KEY        reduce using rule 38 (expression -> MINUS expression .)
+    IF              reduce using rule 38 (expression -> MINUS expression .)
+    WHILE           reduce using rule 38 (expression -> MINUS expression .)
+    NAME            reduce using rule 38 (expression -> MINUS expression .)
+    PRINT           reduce using rule 38 (expression -> MINUS expression .)
+    LEFT_PAR        reduce using rule 38 (expression -> MINUS expression .)
+    INT             reduce using rule 38 (expression -> MINUS expression .)
+    FLOAT           reduce using rule 38 (expression -> MINUS expression .)
+    ELSE            reduce using rule 38 (expression -> MINUS expression .)
+    RIGHT_KEY       reduce using rule 38 (expression -> MINUS expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+
+  ! MULTIPLY        [ reduce using rule 38 (expression -> MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 38 (expression -> MINUS expression .) ]
+  ! PLUS            [ shift and go to state 24 ]
+  ! MINUS           [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 21 ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHAN       [ shift and go to state 28 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
+state 36
+
+    (6) calc -> var_assign TERM .
+
+    $end            reduce using rule 6 (calc -> var_assign TERM .)
+
+
+state 37
 
     (25) read -> NAME EQUALS . INPUT
     (24) var_assign -> NAME EQUALS . expression
@@ -582,383 +893,16 @@ state 24
     (40) expression -> . FLOAT
     (41) expression -> . NAME
 
-    INPUT           shift and go to state 41
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 42
-
-state 25
-
-    (6) calc -> var_assign TERM .
-
-    $end            reduce using rule 6 (calc -> var_assign TERM .)
-
-
-state 26
-
-    (4) calc -> read TERM .
-
-    $end            reduce using rule 4 (calc -> read TERM .)
-
-
-state 27
-
-    (13) while_do -> WHILE LEFT_PAR . expression RIGHT_PAR do_statement
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 43
-
-state 28
-
-    (35) expression -> expression NOTEQUAL . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 44
-
-state 29
-
-    (36) expression -> expression ISEQUAL . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 45
-
-state 30
-
-    (29) expression -> expression PLUS . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 46
-
-state 31
-
-    (30) expression -> expression MINUS . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 47
-
-state 32
-
-    (32) expression -> expression LESSTHANEQ . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 48
-
-state 33
-
-    (34) expression -> expression GREATTHANEQ . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 49
-
-state 34
-
-    (31) expression -> expression LESSTHAN . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 50
-
-state 35
-
-    (33) expression -> expression GREATTHAN . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 51
-
-state 36
-
-    (28) expression -> expression DIVIDE . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
+    INPUT           shift and go to state 53
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+    NAME            shift and go to state 33
 
     expression                     shift and go to state 52
 
-state 37
-
-    (27) expression -> expression MULTIPLY . expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-    NAME            shift and go to state 20
-
-    expression                     shift and go to state 53
-
 state 38
-
-    (26) print -> PRINT LEFT_PAR expression . RIGHT_PAR
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
-
-    RIGHT_PAR       shift and go to state 54
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
-
-
-state 39
-
-    (37) expression -> LEFT_PAR expression RIGHT_PAR .
-
-    RIGHT_PAR       reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    MULTIPLY        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    DIVIDE          reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    PLUS            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    MINUS           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    LESSTHAN        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    LESSTHANEQ      reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    GREATTHAN       reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    GREATTHANEQ     reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    NOTEQUAL        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    ISEQUAL         reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    $end            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    TERM            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    LEFT_KEY        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    IF              reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    WHILE           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    NAME            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    PRINT           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    LEFT_PAR        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    INT             reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    FLOAT           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    ELSE            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-    RIGHT_KEY       reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
-
-
-state 40
 
     (9) if_else -> IF LEFT_PAR expression . RIGHT_PAR then_statement else_statement
     (10) if -> IF LEFT_PAR expression . RIGHT_PAR then_statement
@@ -973,29 +917,22 @@ state 40
     (35) expression -> expression . NOTEQUAL expression
     (36) expression -> expression . ISEQUAL expression
 
-    RIGHT_PAR       shift and go to state 55
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
+    RIGHT_PAR       shift and go to state 54
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
 
 
-state 41
+state 39
 
-    (25) read -> NAME EQUALS INPUT .
-
-    TERM            reduce using rule 25 (read -> NAME EQUALS INPUT .)
-
-
-state 42
-
-    (24) var_assign -> NAME EQUALS expression .
+    (31) expression -> expression LESSTHAN expression .
     (27) expression -> expression . MULTIPLY expression
     (28) expression -> expression . DIVIDE expression
     (29) expression -> expression . PLUS expression
@@ -1007,47 +944,43 @@ state 42
     (35) expression -> expression . NOTEQUAL expression
     (36) expression -> expression . ISEQUAL expression
 
-    TERM            reduce using rule 24 (var_assign -> NAME EQUALS expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
+    LESSTHAN        reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    LESSTHANEQ      reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    GREATTHAN       reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    GREATTHANEQ     reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    NOTEQUAL        reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    ISEQUAL         reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    $end            reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    RIGHT_PAR       reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    TERM            reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    LEFT_KEY        reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    IF              reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    WHILE           reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    NAME            reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    PRINT           reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    LEFT_PAR        reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    INT             reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    FLOAT           reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    ELSE            reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    RIGHT_KEY       reduce using rule 31 (expression -> expression LESSTHAN expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+
+  ! MULTIPLY        [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
+  ! DIVIDE          [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
+  ! PLUS            [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
+  ! MINUS           [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
+  ! LESSTHAN        [ shift and go to state 21 ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHAN       [ shift and go to state 28 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
 
 
-state 43
-
-    (13) while_do -> WHILE LEFT_PAR expression . RIGHT_PAR do_statement
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
-
-    RIGHT_PAR       shift and go to state 56
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
-
-
-state 44
+state 40
 
     (35) expression -> expression NOTEQUAL expression .
     (27) expression -> expression . MULTIPLY expression
@@ -1071,8 +1004,8 @@ state 44
   ! shift/reduce conflict for GREATTHANEQ resolved as shift
   ! shift/reduce conflict for NOTEQUAL resolved as shift
   ! shift/reduce conflict for ISEQUAL resolved as shift
-    RIGHT_PAR       reduce using rule 35 (expression -> expression NOTEQUAL expression .)
     $end            reduce using rule 35 (expression -> expression NOTEQUAL expression .)
+    RIGHT_PAR       reduce using rule 35 (expression -> expression NOTEQUAL expression .)
     TERM            reduce using rule 35 (expression -> expression NOTEQUAL expression .)
     LEFT_KEY        reduce using rule 35 (expression -> expression NOTEQUAL expression .)
     IF              reduce using rule 35 (expression -> expression NOTEQUAL expression .)
@@ -1084,16 +1017,16 @@ state 44
     FLOAT           reduce using rule 35 (expression -> expression NOTEQUAL expression .)
     ELSE            reduce using rule 35 (expression -> expression NOTEQUAL expression .)
     RIGHT_KEY       reduce using rule 35 (expression -> expression NOTEQUAL expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
 
   ! MULTIPLY        [ reduce using rule 35 (expression -> expression NOTEQUAL expression .) ]
   ! DIVIDE          [ reduce using rule 35 (expression -> expression NOTEQUAL expression .) ]
@@ -1107,7 +1040,357 @@ state 44
   ! ISEQUAL         [ reduce using rule 35 (expression -> expression NOTEQUAL expression .) ]
 
 
+state 41
+
+    (27) expression -> expression MULTIPLY expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    MULTIPLY        reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    DIVIDE          reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    PLUS            reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    MINUS           reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    LESSTHAN        reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    LESSTHANEQ      reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    GREATTHAN       reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    GREATTHANEQ     reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    NOTEQUAL        reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    ISEQUAL         reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    $end            reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    RIGHT_PAR       reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    TERM            reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    LEFT_KEY        reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    IF              reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    WHILE           reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    NAME            reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    PRINT           reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    LEFT_PAR        reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    INT             reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    FLOAT           reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    ELSE            reduce using rule 27 (expression -> expression MULTIPLY expression .)
+    RIGHT_KEY       reduce using rule 27 (expression -> expression MULTIPLY expression .)
+
+  ! MULTIPLY        [ shift and go to state 23 ]
+  ! DIVIDE          [ shift and go to state 29 ]
+  ! PLUS            [ shift and go to state 24 ]
+  ! MINUS           [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 21 ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHAN       [ shift and go to state 28 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
+state 42
+
+    (29) expression -> expression PLUS expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    PLUS            reduce using rule 29 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 29 (expression -> expression PLUS expression .)
+    LESSTHAN        reduce using rule 29 (expression -> expression PLUS expression .)
+    LESSTHANEQ      reduce using rule 29 (expression -> expression PLUS expression .)
+    GREATTHAN       reduce using rule 29 (expression -> expression PLUS expression .)
+    GREATTHANEQ     reduce using rule 29 (expression -> expression PLUS expression .)
+    NOTEQUAL        reduce using rule 29 (expression -> expression PLUS expression .)
+    ISEQUAL         reduce using rule 29 (expression -> expression PLUS expression .)
+    $end            reduce using rule 29 (expression -> expression PLUS expression .)
+    RIGHT_PAR       reduce using rule 29 (expression -> expression PLUS expression .)
+    TERM            reduce using rule 29 (expression -> expression PLUS expression .)
+    LEFT_KEY        reduce using rule 29 (expression -> expression PLUS expression .)
+    IF              reduce using rule 29 (expression -> expression PLUS expression .)
+    WHILE           reduce using rule 29 (expression -> expression PLUS expression .)
+    NAME            reduce using rule 29 (expression -> expression PLUS expression .)
+    PRINT           reduce using rule 29 (expression -> expression PLUS expression .)
+    LEFT_PAR        reduce using rule 29 (expression -> expression PLUS expression .)
+    INT             reduce using rule 29 (expression -> expression PLUS expression .)
+    FLOAT           reduce using rule 29 (expression -> expression PLUS expression .)
+    ELSE            reduce using rule 29 (expression -> expression PLUS expression .)
+    RIGHT_KEY       reduce using rule 29 (expression -> expression PLUS expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+
+  ! MULTIPLY        [ reduce using rule 29 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 29 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 24 ]
+  ! MINUS           [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 21 ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHAN       [ shift and go to state 28 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
+state 43
+
+    (32) expression -> expression LESSTHANEQ expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    LESSTHANEQ      reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    GREATTHANEQ     reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    NOTEQUAL        reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    ISEQUAL         reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    $end            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    RIGHT_PAR       reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    TERM            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    LEFT_KEY        reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    IF              reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    WHILE           reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    NAME            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    PRINT           reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    LEFT_PAR        reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    INT             reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    FLOAT           reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    ELSE            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    RIGHT_KEY       reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    GREATTHAN       shift and go to state 28
+
+  ! MULTIPLY        [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
+  ! DIVIDE          [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
+  ! PLUS            [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
+  ! MINUS           [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
+  ! LESSTHAN        [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
+  ! GREATTHAN       [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
+state 44
+
+    (30) expression -> expression MINUS expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    PLUS            reduce using rule 30 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 30 (expression -> expression MINUS expression .)
+    LESSTHAN        reduce using rule 30 (expression -> expression MINUS expression .)
+    LESSTHANEQ      reduce using rule 30 (expression -> expression MINUS expression .)
+    GREATTHAN       reduce using rule 30 (expression -> expression MINUS expression .)
+    GREATTHANEQ     reduce using rule 30 (expression -> expression MINUS expression .)
+    NOTEQUAL        reduce using rule 30 (expression -> expression MINUS expression .)
+    ISEQUAL         reduce using rule 30 (expression -> expression MINUS expression .)
+    $end            reduce using rule 30 (expression -> expression MINUS expression .)
+    RIGHT_PAR       reduce using rule 30 (expression -> expression MINUS expression .)
+    TERM            reduce using rule 30 (expression -> expression MINUS expression .)
+    LEFT_KEY        reduce using rule 30 (expression -> expression MINUS expression .)
+    IF              reduce using rule 30 (expression -> expression MINUS expression .)
+    WHILE           reduce using rule 30 (expression -> expression MINUS expression .)
+    NAME            reduce using rule 30 (expression -> expression MINUS expression .)
+    PRINT           reduce using rule 30 (expression -> expression MINUS expression .)
+    LEFT_PAR        reduce using rule 30 (expression -> expression MINUS expression .)
+    INT             reduce using rule 30 (expression -> expression MINUS expression .)
+    FLOAT           reduce using rule 30 (expression -> expression MINUS expression .)
+    ELSE            reduce using rule 30 (expression -> expression MINUS expression .)
+    RIGHT_KEY       reduce using rule 30 (expression -> expression MINUS expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+
+  ! MULTIPLY        [ reduce using rule 30 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 30 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 24 ]
+  ! MINUS           [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 21 ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHAN       [ shift and go to state 28 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
 state 45
+
+    (34) expression -> expression GREATTHANEQ expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    LESSTHANEQ      reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    GREATTHANEQ     reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    NOTEQUAL        reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    ISEQUAL         reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    $end            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    RIGHT_PAR       reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    TERM            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    LEFT_KEY        reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    IF              reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    WHILE           reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    NAME            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    PRINT           reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    LEFT_PAR        reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    INT             reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    FLOAT           reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    ELSE            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    RIGHT_KEY       reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    GREATTHAN       shift and go to state 28
+
+  ! MULTIPLY        [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
+  ! DIVIDE          [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
+  ! PLUS            [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
+  ! MINUS           [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
+  ! LESSTHAN        [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
+  ! GREATTHAN       [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
+state 46
+
+    (33) expression -> expression GREATTHAN expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    LESSTHAN        reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    LESSTHANEQ      reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    GREATTHAN       reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    GREATTHANEQ     reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    NOTEQUAL        reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    ISEQUAL         reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    $end            reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    RIGHT_PAR       reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    TERM            reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    LEFT_KEY        reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    IF              reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    WHILE           reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    NAME            reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    PRINT           reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    LEFT_PAR        reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    INT             reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    FLOAT           reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    ELSE            reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    RIGHT_KEY       reduce using rule 33 (expression -> expression GREATTHAN expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+
+  ! MULTIPLY        [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
+  ! DIVIDE          [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
+  ! PLUS            [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
+  ! MINUS           [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
+  ! LESSTHAN        [ shift and go to state 21 ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHAN       [ shift and go to state 28 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
+state 47
+
+    (28) expression -> expression DIVIDE expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+    MULTIPLY        reduce using rule 28 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 28 (expression -> expression DIVIDE expression .)
+    PLUS            reduce using rule 28 (expression -> expression DIVIDE expression .)
+    MINUS           reduce using rule 28 (expression -> expression DIVIDE expression .)
+    LESSTHAN        reduce using rule 28 (expression -> expression DIVIDE expression .)
+    LESSTHANEQ      reduce using rule 28 (expression -> expression DIVIDE expression .)
+    GREATTHAN       reduce using rule 28 (expression -> expression DIVIDE expression .)
+    GREATTHANEQ     reduce using rule 28 (expression -> expression DIVIDE expression .)
+    NOTEQUAL        reduce using rule 28 (expression -> expression DIVIDE expression .)
+    ISEQUAL         reduce using rule 28 (expression -> expression DIVIDE expression .)
+    $end            reduce using rule 28 (expression -> expression DIVIDE expression .)
+    RIGHT_PAR       reduce using rule 28 (expression -> expression DIVIDE expression .)
+    TERM            reduce using rule 28 (expression -> expression DIVIDE expression .)
+    LEFT_KEY        reduce using rule 28 (expression -> expression DIVIDE expression .)
+    IF              reduce using rule 28 (expression -> expression DIVIDE expression .)
+    WHILE           reduce using rule 28 (expression -> expression DIVIDE expression .)
+    NAME            reduce using rule 28 (expression -> expression DIVIDE expression .)
+    PRINT           reduce using rule 28 (expression -> expression DIVIDE expression .)
+    LEFT_PAR        reduce using rule 28 (expression -> expression DIVIDE expression .)
+    INT             reduce using rule 28 (expression -> expression DIVIDE expression .)
+    FLOAT           reduce using rule 28 (expression -> expression DIVIDE expression .)
+    ELSE            reduce using rule 28 (expression -> expression DIVIDE expression .)
+    RIGHT_KEY       reduce using rule 28 (expression -> expression DIVIDE expression .)
+
+  ! MULTIPLY        [ shift and go to state 23 ]
+  ! DIVIDE          [ shift and go to state 29 ]
+  ! PLUS            [ shift and go to state 24 ]
+  ! MINUS           [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 21 ]
+  ! LESSTHANEQ      [ shift and go to state 25 ]
+  ! GREATTHAN       [ shift and go to state 28 ]
+  ! GREATTHANEQ     [ shift and go to state 27 ]
+  ! NOTEQUAL        [ shift and go to state 22 ]
+  ! ISEQUAL         [ shift and go to state 30 ]
+
+
+state 48
 
     (36) expression -> expression ISEQUAL expression .
     (27) expression -> expression . MULTIPLY expression
@@ -1131,8 +1414,8 @@ state 45
   ! shift/reduce conflict for GREATTHANEQ resolved as shift
   ! shift/reduce conflict for NOTEQUAL resolved as shift
   ! shift/reduce conflict for ISEQUAL resolved as shift
-    RIGHT_PAR       reduce using rule 36 (expression -> expression ISEQUAL expression .)
     $end            reduce using rule 36 (expression -> expression ISEQUAL expression .)
+    RIGHT_PAR       reduce using rule 36 (expression -> expression ISEQUAL expression .)
     TERM            reduce using rule 36 (expression -> expression ISEQUAL expression .)
     LEFT_KEY        reduce using rule 36 (expression -> expression ISEQUAL expression .)
     IF              reduce using rule 36 (expression -> expression ISEQUAL expression .)
@@ -1144,16 +1427,16 @@ state 45
     FLOAT           reduce using rule 36 (expression -> expression ISEQUAL expression .)
     ELSE            reduce using rule 36 (expression -> expression ISEQUAL expression .)
     RIGHT_KEY       reduce using rule 36 (expression -> expression ISEQUAL expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
 
   ! MULTIPLY        [ reduce using rule 36 (expression -> expression ISEQUAL expression .) ]
   ! DIVIDE          [ reduce using rule 36 (expression -> expression ISEQUAL expression .) ]
@@ -1167,159 +1450,9 @@ state 45
   ! ISEQUAL         [ reduce using rule 36 (expression -> expression ISEQUAL expression .) ]
 
 
-state 46
-
-    (29) expression -> expression PLUS expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
-
-    RIGHT_PAR       reduce using rule 29 (expression -> expression PLUS expression .)
-    PLUS            reduce using rule 29 (expression -> expression PLUS expression .)
-    MINUS           reduce using rule 29 (expression -> expression PLUS expression .)
-    LESSTHAN        reduce using rule 29 (expression -> expression PLUS expression .)
-    LESSTHANEQ      reduce using rule 29 (expression -> expression PLUS expression .)
-    GREATTHAN       reduce using rule 29 (expression -> expression PLUS expression .)
-    GREATTHANEQ     reduce using rule 29 (expression -> expression PLUS expression .)
-    NOTEQUAL        reduce using rule 29 (expression -> expression PLUS expression .)
-    ISEQUAL         reduce using rule 29 (expression -> expression PLUS expression .)
-    $end            reduce using rule 29 (expression -> expression PLUS expression .)
-    TERM            reduce using rule 29 (expression -> expression PLUS expression .)
-    LEFT_KEY        reduce using rule 29 (expression -> expression PLUS expression .)
-    IF              reduce using rule 29 (expression -> expression PLUS expression .)
-    WHILE           reduce using rule 29 (expression -> expression PLUS expression .)
-    NAME            reduce using rule 29 (expression -> expression PLUS expression .)
-    PRINT           reduce using rule 29 (expression -> expression PLUS expression .)
-    LEFT_PAR        reduce using rule 29 (expression -> expression PLUS expression .)
-    INT             reduce using rule 29 (expression -> expression PLUS expression .)
-    FLOAT           reduce using rule 29 (expression -> expression PLUS expression .)
-    ELSE            reduce using rule 29 (expression -> expression PLUS expression .)
-    RIGHT_KEY       reduce using rule 29 (expression -> expression PLUS expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-
-  ! MULTIPLY        [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! DIVIDE          [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 30 ]
-  ! MINUS           [ shift and go to state 31 ]
-  ! LESSTHAN        [ shift and go to state 34 ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHAN       [ shift and go to state 35 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
-
-
-state 47
-
-    (30) expression -> expression MINUS expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
-
-    RIGHT_PAR       reduce using rule 30 (expression -> expression MINUS expression .)
-    PLUS            reduce using rule 30 (expression -> expression MINUS expression .)
-    MINUS           reduce using rule 30 (expression -> expression MINUS expression .)
-    LESSTHAN        reduce using rule 30 (expression -> expression MINUS expression .)
-    LESSTHANEQ      reduce using rule 30 (expression -> expression MINUS expression .)
-    GREATTHAN       reduce using rule 30 (expression -> expression MINUS expression .)
-    GREATTHANEQ     reduce using rule 30 (expression -> expression MINUS expression .)
-    NOTEQUAL        reduce using rule 30 (expression -> expression MINUS expression .)
-    ISEQUAL         reduce using rule 30 (expression -> expression MINUS expression .)
-    $end            reduce using rule 30 (expression -> expression MINUS expression .)
-    TERM            reduce using rule 30 (expression -> expression MINUS expression .)
-    LEFT_KEY        reduce using rule 30 (expression -> expression MINUS expression .)
-    IF              reduce using rule 30 (expression -> expression MINUS expression .)
-    WHILE           reduce using rule 30 (expression -> expression MINUS expression .)
-    NAME            reduce using rule 30 (expression -> expression MINUS expression .)
-    PRINT           reduce using rule 30 (expression -> expression MINUS expression .)
-    LEFT_PAR        reduce using rule 30 (expression -> expression MINUS expression .)
-    INT             reduce using rule 30 (expression -> expression MINUS expression .)
-    FLOAT           reduce using rule 30 (expression -> expression MINUS expression .)
-    ELSE            reduce using rule 30 (expression -> expression MINUS expression .)
-    RIGHT_KEY       reduce using rule 30 (expression -> expression MINUS expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-
-  ! MULTIPLY        [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! DIVIDE          [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! PLUS            [ shift and go to state 30 ]
-  ! MINUS           [ shift and go to state 31 ]
-  ! LESSTHAN        [ shift and go to state 34 ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHAN       [ shift and go to state 35 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
-
-
-state 48
-
-    (32) expression -> expression LESSTHANEQ expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
-
-    RIGHT_PAR       reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    LESSTHANEQ      reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    GREATTHANEQ     reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    NOTEQUAL        reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    ISEQUAL         reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    $end            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    TERM            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    LEFT_KEY        reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    IF              reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    WHILE           reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    NAME            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    PRINT           reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    LEFT_PAR        reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    INT             reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    FLOAT           reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    ELSE            reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    RIGHT_KEY       reduce using rule 32 (expression -> expression LESSTHANEQ expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    GREATTHAN       shift and go to state 35
-
-  ! MULTIPLY        [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
-  ! DIVIDE          [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
-  ! PLUS            [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
-  ! MINUS           [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
-  ! LESSTHAN        [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
-  ! GREATTHAN       [ reduce using rule 32 (expression -> expression LESSTHANEQ expression .) ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
-
-
 state 49
 
-    (34) expression -> expression GREATTHANEQ expression .
+    (13) while_do -> WHILE LEFT_PAR expression . RIGHT_PAR do_statement
     (27) expression -> expression . MULTIPLY expression
     (28) expression -> expression . DIVIDE expression
     (29) expression -> expression . PLUS expression
@@ -1331,95 +1464,51 @@ state 49
     (35) expression -> expression . NOTEQUAL expression
     (36) expression -> expression . ISEQUAL expression
 
-    RIGHT_PAR       reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    LESSTHANEQ      reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    GREATTHANEQ     reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    NOTEQUAL        reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    ISEQUAL         reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    $end            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    TERM            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    LEFT_KEY        reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    IF              reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    WHILE           reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    NAME            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    PRINT           reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    LEFT_PAR        reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    INT             reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    FLOAT           reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    ELSE            reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    RIGHT_KEY       reduce using rule 34 (expression -> expression GREATTHANEQ expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    GREATTHAN       shift and go to state 35
-
-  ! MULTIPLY        [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
-  ! DIVIDE          [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
-  ! PLUS            [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
-  ! MINUS           [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
-  ! LESSTHAN        [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
-  ! GREATTHAN       [ reduce using rule 34 (expression -> expression GREATTHANEQ expression .) ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
+    RIGHT_PAR       shift and go to state 55
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
 
 
 state 50
 
-    (31) expression -> expression LESSTHAN expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
+    (37) expression -> LEFT_PAR expression RIGHT_PAR .
 
-    RIGHT_PAR       reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    LESSTHAN        reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    LESSTHANEQ      reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    GREATTHAN       reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    GREATTHANEQ     reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    NOTEQUAL        reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    ISEQUAL         reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    $end            reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    TERM            reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    LEFT_KEY        reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    IF              reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    WHILE           reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    NAME            reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    PRINT           reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    LEFT_PAR        reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    INT             reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    FLOAT           reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    ELSE            reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    RIGHT_KEY       reduce using rule 31 (expression -> expression LESSTHAN expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-
-  ! MULTIPLY        [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
-  ! DIVIDE          [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
-  ! PLUS            [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
-  ! MINUS           [ reduce using rule 31 (expression -> expression LESSTHAN expression .) ]
-  ! LESSTHAN        [ shift and go to state 34 ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHAN       [ shift and go to state 35 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
+    MULTIPLY        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    DIVIDE          reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    PLUS            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    MINUS           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    LESSTHAN        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    LESSTHANEQ      reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    GREATTHAN       reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    GREATTHANEQ     reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    NOTEQUAL        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    ISEQUAL         reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    $end            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    RIGHT_PAR       reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    TERM            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    LEFT_KEY        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    IF              reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    WHILE           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    NAME            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    PRINT           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    LEFT_PAR        reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    INT             reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    FLOAT           reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    ELSE            reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
+    RIGHT_KEY       reduce using rule 37 (expression -> LEFT_PAR expression RIGHT_PAR .)
 
 
 state 51
 
-    (33) expression -> expression GREATTHAN expression .
+    (26) print -> PRINT LEFT_PAR expression . RIGHT_PAR
     (27) expression -> expression . MULTIPLY expression
     (28) expression -> expression . DIVIDE expression
     (29) expression -> expression . PLUS expression
@@ -1431,45 +1520,22 @@ state 51
     (35) expression -> expression . NOTEQUAL expression
     (36) expression -> expression . ISEQUAL expression
 
-    RIGHT_PAR       reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    LESSTHAN        reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    LESSTHANEQ      reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    GREATTHAN       reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    GREATTHANEQ     reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    NOTEQUAL        reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    ISEQUAL         reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    $end            reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    TERM            reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    LEFT_KEY        reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    IF              reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    WHILE           reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    NAME            reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    PRINT           reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    LEFT_PAR        reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    INT             reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    FLOAT           reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    ELSE            reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    RIGHT_KEY       reduce using rule 33 (expression -> expression GREATTHAN expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-
-  ! MULTIPLY        [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
-  ! DIVIDE          [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
-  ! PLUS            [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
-  ! MINUS           [ reduce using rule 33 (expression -> expression GREATTHAN expression .) ]
-  ! LESSTHAN        [ shift and go to state 34 ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHAN       [ shift and go to state 35 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
+    RIGHT_PAR       shift and go to state 56
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
 
 
 state 52
 
-    (28) expression -> expression DIVIDE expression .
+    (24) var_assign -> NAME EQUALS expression .
     (27) expression -> expression . MULTIPLY expression
     (28) expression -> expression . DIVIDE expression
     (29) expression -> expression . PLUS expression
@@ -1481,155 +1547,53 @@ state 52
     (35) expression -> expression . NOTEQUAL expression
     (36) expression -> expression . ISEQUAL expression
 
-    RIGHT_PAR       reduce using rule 28 (expression -> expression DIVIDE expression .)
-    MULTIPLY        reduce using rule 28 (expression -> expression DIVIDE expression .)
-    DIVIDE          reduce using rule 28 (expression -> expression DIVIDE expression .)
-    PLUS            reduce using rule 28 (expression -> expression DIVIDE expression .)
-    MINUS           reduce using rule 28 (expression -> expression DIVIDE expression .)
-    LESSTHAN        reduce using rule 28 (expression -> expression DIVIDE expression .)
-    LESSTHANEQ      reduce using rule 28 (expression -> expression DIVIDE expression .)
-    GREATTHAN       reduce using rule 28 (expression -> expression DIVIDE expression .)
-    GREATTHANEQ     reduce using rule 28 (expression -> expression DIVIDE expression .)
-    NOTEQUAL        reduce using rule 28 (expression -> expression DIVIDE expression .)
-    ISEQUAL         reduce using rule 28 (expression -> expression DIVIDE expression .)
-    $end            reduce using rule 28 (expression -> expression DIVIDE expression .)
-    TERM            reduce using rule 28 (expression -> expression DIVIDE expression .)
-    LEFT_KEY        reduce using rule 28 (expression -> expression DIVIDE expression .)
-    IF              reduce using rule 28 (expression -> expression DIVIDE expression .)
-    WHILE           reduce using rule 28 (expression -> expression DIVIDE expression .)
-    NAME            reduce using rule 28 (expression -> expression DIVIDE expression .)
-    PRINT           reduce using rule 28 (expression -> expression DIVIDE expression .)
-    LEFT_PAR        reduce using rule 28 (expression -> expression DIVIDE expression .)
-    INT             reduce using rule 28 (expression -> expression DIVIDE expression .)
-    FLOAT           reduce using rule 28 (expression -> expression DIVIDE expression .)
-    ELSE            reduce using rule 28 (expression -> expression DIVIDE expression .)
-    RIGHT_KEY       reduce using rule 28 (expression -> expression DIVIDE expression .)
-
-  ! MULTIPLY        [ shift and go to state 37 ]
-  ! DIVIDE          [ shift and go to state 36 ]
-  ! PLUS            [ shift and go to state 30 ]
-  ! MINUS           [ shift and go to state 31 ]
-  ! LESSTHAN        [ shift and go to state 34 ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHAN       [ shift and go to state 35 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
+    TERM            reduce using rule 24 (var_assign -> NAME EQUALS expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
 
 
 state 53
 
-    (27) expression -> expression MULTIPLY expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
+    (25) read -> NAME EQUALS INPUT .
 
-    RIGHT_PAR       reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    MULTIPLY        reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    DIVIDE          reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    PLUS            reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    MINUS           reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    LESSTHAN        reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    LESSTHANEQ      reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    GREATTHAN       reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    GREATTHANEQ     reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    NOTEQUAL        reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    ISEQUAL         reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    $end            reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    TERM            reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    LEFT_KEY        reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    IF              reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    WHILE           reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    NAME            reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    PRINT           reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    LEFT_PAR        reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    INT             reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    FLOAT           reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    ELSE            reduce using rule 27 (expression -> expression MULTIPLY expression .)
-    RIGHT_KEY       reduce using rule 27 (expression -> expression MULTIPLY expression .)
-
-  ! MULTIPLY        [ shift and go to state 37 ]
-  ! DIVIDE          [ shift and go to state 36 ]
-  ! PLUS            [ shift and go to state 30 ]
-  ! MINUS           [ shift and go to state 31 ]
-  ! LESSTHAN        [ shift and go to state 34 ]
-  ! LESSTHANEQ      [ shift and go to state 32 ]
-  ! GREATTHAN       [ shift and go to state 35 ]
-  ! GREATTHANEQ     [ shift and go to state 33 ]
-  ! NOTEQUAL        [ shift and go to state 28 ]
-  ! ISEQUAL         [ shift and go to state 29 ]
+    TERM            reduce using rule 25 (read -> NAME EQUALS INPUT .)
 
 
 state 54
-
-    (26) print -> PRINT LEFT_PAR expression RIGHT_PAR .
-
-    TERM            reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    $end            reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    LEFT_KEY        reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    IF              reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    WHILE           reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    NAME            reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    PRINT           reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    LEFT_PAR        reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    MINUS           reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    INT             reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    FLOAT           reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    ELSE            reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-    RIGHT_KEY       reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
-
-
-state 55
 
     (9) if_else -> IF LEFT_PAR expression RIGHT_PAR . then_statement else_statement
     (10) if -> IF LEFT_PAR expression RIGHT_PAR . then_statement
     (11) then_statement -> . THEN calc_2
 
-    THEN            shift and go to state 58
+    THEN            shift and go to state 57
 
-    then_statement                 shift and go to state 57
+    then_statement                 shift and go to state 58
+
+state 55
+
+    (13) while_do -> WHILE LEFT_PAR expression RIGHT_PAR . do_statement
+    (14) do_statement -> . DO calc_2
+
+    DO              shift and go to state 59
+
+    do_statement                   shift and go to state 60
 
 state 56
 
-    (13) while_do -> WHILE LEFT_PAR expression RIGHT_PAR . do_statement
-    (14) do_statement -> . DO print
+    (26) print -> PRINT LEFT_PAR expression RIGHT_PAR .
 
-    DO              shift and go to state 60
+    TERM            reduce using rule 26 (print -> PRINT LEFT_PAR expression RIGHT_PAR .)
 
-    do_statement                   shift and go to state 59
 
 state 57
-
-    (9) if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement . else_statement
-    (10) if -> IF LEFT_PAR expression RIGHT_PAR then_statement .
-    (12) else_statement -> . ELSE calc_2
-
-  ! shift/reduce conflict for ELSE resolved as shift
-    $end            reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    LEFT_KEY        reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    IF              reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    WHILE           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    NAME            reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    PRINT           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    LEFT_PAR        reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    MINUS           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    INT             reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    FLOAT           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    RIGHT_KEY       reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
-    ELSE            shift and go to state 62
-
-  ! ELSE            [ reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .) ]
-
-    else_statement                 shift and go to state 61
-
-state 58
 
     (11) then_statement -> THEN . calc_2
     (15) calc_2 -> . if_else
@@ -1663,26 +1627,103 @@ state 58
     (40) expression -> . FLOAT
     (41) expression -> . NAME
 
-    LEFT_KEY        shift and go to state 64
-    IF              shift and go to state 8
-    WHILE           shift and go to state 16
-    NAME            shift and go to state 11
-    PRINT           shift and go to state 1
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
 
-    calc_2                         shift and go to state 68
-    if_else                        shift and go to state 66
-    var_assign                     shift and go to state 69
-    while_do                       shift and go to state 67
-    read                           shift and go to state 70
-    if                             shift and go to state 65
-    print                          shift and go to state 63
-    expression                     shift and go to state 71
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 66
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
+
+state 58
+
+    (9) if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement . else_statement
+    (10) if -> IF LEFT_PAR expression RIGHT_PAR then_statement .
+    (12) else_statement -> . ELSE calc_2
+
+  ! shift/reduce conflict for ELSE resolved as shift
+    $end            reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    LEFT_KEY        reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    IF              reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    WHILE           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    NAME            reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    PRINT           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    LEFT_PAR        reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    MINUS           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    INT             reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    FLOAT           reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    RIGHT_KEY       reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .)
+    ELSE            shift and go to state 70
+
+  ! ELSE            [ reduce using rule 10 (if -> IF LEFT_PAR expression RIGHT_PAR then_statement .) ]
+
+    else_statement                 shift and go to state 71
 
 state 59
+
+    (14) do_statement -> DO . calc_2
+    (15) calc_2 -> . if_else
+    (16) calc_2 -> . if
+    (17) calc_2 -> . while_do
+    (18) calc_2 -> . read TERM
+    (19) calc_2 -> . print TERM
+    (20) calc_2 -> . var_assign TERM
+    (21) calc_2 -> . expression
+    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
+    (23) calc_2 -> . calc_2 calc_2
+    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
+    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
+    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
+    (25) read -> . NAME EQUALS INPUT
+    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
+    (24) var_assign -> . NAME EQUALS expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 72
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
+
+state 60
 
     (13) while_do -> WHILE LEFT_PAR expression RIGHT_PAR do_statement .
 
@@ -1700,183 +1741,21 @@ state 59
     RIGHT_KEY       reduce using rule 13 (while_do -> WHILE LEFT_PAR expression RIGHT_PAR do_statement .)
 
 
-state 60
-
-    (14) do_statement -> DO . print
-    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
-
-    PRINT           shift and go to state 1
-
-    print                          shift and go to state 72
-
 state 61
 
-    (9) if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .
+    (19) calc_2 -> print . TERM
 
-    LEFT_KEY        reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    IF              reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    WHILE           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    NAME            reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    PRINT           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    LEFT_PAR        reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    MINUS           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    INT             reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    FLOAT           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    ELSE            reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    $end            reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
-    RIGHT_KEY       reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    TERM            shift and go to state 73
 
 
 state 62
 
-    (12) else_statement -> ELSE . calc_2
-    (15) calc_2 -> . if_else
-    (16) calc_2 -> . if
-    (17) calc_2 -> . while_do
-    (18) calc_2 -> . read TERM
-    (19) calc_2 -> . print TERM
-    (20) calc_2 -> . var_assign TERM
-    (21) calc_2 -> . expression
-    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
-    (23) calc_2 -> . calc_2 calc_2
-    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
-    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
-    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
-    (25) read -> . NAME EQUALS INPUT
-    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
-    (24) var_assign -> . NAME EQUALS expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_KEY        shift and go to state 64
-    IF              shift and go to state 8
-    WHILE           shift and go to state 16
-    NAME            shift and go to state 11
-    PRINT           shift and go to state 1
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-
-    calc_2                         shift and go to state 73
-    if_else                        shift and go to state 66
-    var_assign                     shift and go to state 69
-    while_do                       shift and go to state 67
-    read                           shift and go to state 70
-    if                             shift and go to state 65
-    print                          shift and go to state 63
-    expression                     shift and go to state 71
-
-state 63
-
-    (19) calc_2 -> print . TERM
+    (18) calc_2 -> read . TERM
 
     TERM            shift and go to state 74
 
 
-state 64
-
-    (22) calc_2 -> LEFT_KEY . calc_2 RIGHT_KEY
-    (15) calc_2 -> . if_else
-    (16) calc_2 -> . if
-    (17) calc_2 -> . while_do
-    (18) calc_2 -> . read TERM
-    (19) calc_2 -> . print TERM
-    (20) calc_2 -> . var_assign TERM
-    (21) calc_2 -> . expression
-    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
-    (23) calc_2 -> . calc_2 calc_2
-    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
-    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
-    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
-    (25) read -> . NAME EQUALS INPUT
-    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
-    (24) var_assign -> . NAME EQUALS expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    LEFT_KEY        shift and go to state 64
-    IF              shift and go to state 8
-    WHILE           shift and go to state 16
-    NAME            shift and go to state 11
-    PRINT           shift and go to state 1
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-
-    calc_2                         shift and go to state 75
-    if_else                        shift and go to state 66
-    var_assign                     shift and go to state 69
-    while_do                       shift and go to state 67
-    read                           shift and go to state 70
-    if                             shift and go to state 65
-    print                          shift and go to state 63
-    expression                     shift and go to state 71
-
-state 65
-
-    (16) calc_2 -> if .
-
-    LEFT_KEY        reduce using rule 16 (calc_2 -> if .)
-    IF              reduce using rule 16 (calc_2 -> if .)
-    WHILE           reduce using rule 16 (calc_2 -> if .)
-    NAME            reduce using rule 16 (calc_2 -> if .)
-    PRINT           reduce using rule 16 (calc_2 -> if .)
-    LEFT_PAR        reduce using rule 16 (calc_2 -> if .)
-    MINUS           reduce using rule 16 (calc_2 -> if .)
-    INT             reduce using rule 16 (calc_2 -> if .)
-    FLOAT           reduce using rule 16 (calc_2 -> if .)
-    ELSE            reduce using rule 16 (calc_2 -> if .)
-    $end            reduce using rule 16 (calc_2 -> if .)
-    RIGHT_KEY       reduce using rule 16 (calc_2 -> if .)
-
-
-state 66
-
-    (15) calc_2 -> if_else .
-
-    LEFT_KEY        reduce using rule 15 (calc_2 -> if_else .)
-    IF              reduce using rule 15 (calc_2 -> if_else .)
-    WHILE           reduce using rule 15 (calc_2 -> if_else .)
-    NAME            reduce using rule 15 (calc_2 -> if_else .)
-    PRINT           reduce using rule 15 (calc_2 -> if_else .)
-    LEFT_PAR        reduce using rule 15 (calc_2 -> if_else .)
-    MINUS           reduce using rule 15 (calc_2 -> if_else .)
-    INT             reduce using rule 15 (calc_2 -> if_else .)
-    FLOAT           reduce using rule 15 (calc_2 -> if_else .)
-    ELSE            reduce using rule 15 (calc_2 -> if_else .)
-    $end            reduce using rule 15 (calc_2 -> if_else .)
-    RIGHT_KEY       reduce using rule 15 (calc_2 -> if_else .)
-
-
-state 67
+state 63
 
     (17) calc_2 -> while_do .
 
@@ -1889,12 +1768,70 @@ state 67
     MINUS           reduce using rule 17 (calc_2 -> while_do .)
     INT             reduce using rule 17 (calc_2 -> while_do .)
     FLOAT           reduce using rule 17 (calc_2 -> while_do .)
+    RIGHT_KEY       reduce using rule 17 (calc_2 -> while_do .)
     ELSE            reduce using rule 17 (calc_2 -> while_do .)
     $end            reduce using rule 17 (calc_2 -> while_do .)
-    RIGHT_KEY       reduce using rule 17 (calc_2 -> while_do .)
 
 
-state 68
+state 64
+
+    (21) calc_2 -> expression .
+    (27) expression -> expression . MULTIPLY expression
+    (28) expression -> expression . DIVIDE expression
+    (29) expression -> expression . PLUS expression
+    (30) expression -> expression . MINUS expression
+    (31) expression -> expression . LESSTHAN expression
+    (32) expression -> expression . LESSTHANEQ expression
+    (33) expression -> expression . GREATTHAN expression
+    (34) expression -> expression . GREATTHANEQ expression
+    (35) expression -> expression . NOTEQUAL expression
+    (36) expression -> expression . ISEQUAL expression
+
+  ! shift/reduce conflict for MINUS resolved as shift
+    LEFT_KEY        reduce using rule 21 (calc_2 -> expression .)
+    IF              reduce using rule 21 (calc_2 -> expression .)
+    WHILE           reduce using rule 21 (calc_2 -> expression .)
+    NAME            reduce using rule 21 (calc_2 -> expression .)
+    PRINT           reduce using rule 21 (calc_2 -> expression .)
+    LEFT_PAR        reduce using rule 21 (calc_2 -> expression .)
+    INT             reduce using rule 21 (calc_2 -> expression .)
+    FLOAT           reduce using rule 21 (calc_2 -> expression .)
+    RIGHT_KEY       reduce using rule 21 (calc_2 -> expression .)
+    ELSE            reduce using rule 21 (calc_2 -> expression .)
+    $end            reduce using rule 21 (calc_2 -> expression .)
+    MULTIPLY        shift and go to state 23
+    DIVIDE          shift and go to state 29
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 26
+    LESSTHAN        shift and go to state 21
+    LESSTHANEQ      shift and go to state 25
+    GREATTHAN       shift and go to state 28
+    GREATTHANEQ     shift and go to state 27
+    NOTEQUAL        shift and go to state 22
+    ISEQUAL         shift and go to state 30
+
+  ! MINUS           [ reduce using rule 21 (calc_2 -> expression .) ]
+
+
+state 65
+
+    (15) calc_2 -> if_else .
+
+    LEFT_KEY        reduce using rule 15 (calc_2 -> if_else .)
+    IF              reduce using rule 15 (calc_2 -> if_else .)
+    WHILE           reduce using rule 15 (calc_2 -> if_else .)
+    NAME            reduce using rule 15 (calc_2 -> if_else .)
+    PRINT           reduce using rule 15 (calc_2 -> if_else .)
+    LEFT_PAR        reduce using rule 15 (calc_2 -> if_else .)
+    MINUS           reduce using rule 15 (calc_2 -> if_else .)
+    INT             reduce using rule 15 (calc_2 -> if_else .)
+    FLOAT           reduce using rule 15 (calc_2 -> if_else .)
+    RIGHT_KEY       reduce using rule 15 (calc_2 -> if_else .)
+    ELSE            reduce using rule 15 (calc_2 -> if_else .)
+    $end            reduce using rule 15 (calc_2 -> if_else .)
+
+
+state 66
 
     (11) then_statement -> THEN calc_2 .
     (23) calc_2 -> calc_2 . calc_2
@@ -1941,15 +1878,15 @@ state 68
     ELSE            reduce using rule 11 (then_statement -> THEN calc_2 .)
     $end            reduce using rule 11 (then_statement -> THEN calc_2 .)
     RIGHT_KEY       reduce using rule 11 (then_statement -> THEN calc_2 .)
-    LEFT_KEY        shift and go to state 64
-    IF              shift and go to state 8
-    WHILE           shift and go to state 16
-    NAME            shift and go to state 11
-    PRINT           shift and go to state 1
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
 
   ! LEFT_KEY        [ reduce using rule 11 (then_statement -> THEN calc_2 .) ]
   ! IF              [ reduce using rule 11 (then_statement -> THEN calc_2 .) ]
@@ -1961,88 +1898,426 @@ state 68
   ! INT             [ reduce using rule 11 (then_statement -> THEN calc_2 .) ]
   ! FLOAT           [ reduce using rule 11 (then_statement -> THEN calc_2 .) ]
 
-    calc_2                         shift and go to state 76
-    if_else                        shift and go to state 66
-    var_assign                     shift and go to state 69
-    while_do                       shift and go to state 67
-    read                           shift and go to state 70
-    if                             shift and go to state 65
-    print                          shift and go to state 63
-    expression                     shift and go to state 71
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 75
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
 
-state 69
+state 67
+
+    (22) calc_2 -> LEFT_KEY . calc_2 RIGHT_KEY
+    (15) calc_2 -> . if_else
+    (16) calc_2 -> . if
+    (17) calc_2 -> . while_do
+    (18) calc_2 -> . read TERM
+    (19) calc_2 -> . print TERM
+    (20) calc_2 -> . var_assign TERM
+    (21) calc_2 -> . expression
+    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
+    (23) calc_2 -> . calc_2 calc_2
+    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
+    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
+    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
+    (25) read -> . NAME EQUALS INPUT
+    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
+    (24) var_assign -> . NAME EQUALS expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 76
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
+
+state 68
 
     (20) calc_2 -> var_assign . TERM
 
     TERM            shift and go to state 77
 
 
+state 69
+
+    (16) calc_2 -> if .
+
+    LEFT_KEY        reduce using rule 16 (calc_2 -> if .)
+    IF              reduce using rule 16 (calc_2 -> if .)
+    WHILE           reduce using rule 16 (calc_2 -> if .)
+    NAME            reduce using rule 16 (calc_2 -> if .)
+    PRINT           reduce using rule 16 (calc_2 -> if .)
+    LEFT_PAR        reduce using rule 16 (calc_2 -> if .)
+    MINUS           reduce using rule 16 (calc_2 -> if .)
+    INT             reduce using rule 16 (calc_2 -> if .)
+    FLOAT           reduce using rule 16 (calc_2 -> if .)
+    RIGHT_KEY       reduce using rule 16 (calc_2 -> if .)
+    ELSE            reduce using rule 16 (calc_2 -> if .)
+    $end            reduce using rule 16 (calc_2 -> if .)
+
+
 state 70
 
-    (18) calc_2 -> read . TERM
+    (12) else_statement -> ELSE . calc_2
+    (15) calc_2 -> . if_else
+    (16) calc_2 -> . if
+    (17) calc_2 -> . while_do
+    (18) calc_2 -> . read TERM
+    (19) calc_2 -> . print TERM
+    (20) calc_2 -> . var_assign TERM
+    (21) calc_2 -> . expression
+    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
+    (23) calc_2 -> . calc_2 calc_2
+    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
+    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
+    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
+    (25) read -> . NAME EQUALS INPUT
+    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
+    (24) var_assign -> . NAME EQUALS expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
 
-    TERM            shift and go to state 78
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
 
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 78
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
 
 state 71
 
-    (21) calc_2 -> expression .
-    (27) expression -> expression . MULTIPLY expression
-    (28) expression -> expression . DIVIDE expression
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . LESSTHAN expression
-    (32) expression -> expression . LESSTHANEQ expression
-    (33) expression -> expression . GREATTHAN expression
-    (34) expression -> expression . GREATTHANEQ expression
-    (35) expression -> expression . NOTEQUAL expression
-    (36) expression -> expression . ISEQUAL expression
+    (9) if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .
 
-  ! shift/reduce conflict for MINUS resolved as shift
-    LEFT_KEY        reduce using rule 21 (calc_2 -> expression .)
-    IF              reduce using rule 21 (calc_2 -> expression .)
-    WHILE           reduce using rule 21 (calc_2 -> expression .)
-    NAME            reduce using rule 21 (calc_2 -> expression .)
-    PRINT           reduce using rule 21 (calc_2 -> expression .)
-    LEFT_PAR        reduce using rule 21 (calc_2 -> expression .)
-    INT             reduce using rule 21 (calc_2 -> expression .)
-    FLOAT           reduce using rule 21 (calc_2 -> expression .)
-    ELSE            reduce using rule 21 (calc_2 -> expression .)
-    $end            reduce using rule 21 (calc_2 -> expression .)
-    RIGHT_KEY       reduce using rule 21 (calc_2 -> expression .)
-    MULTIPLY        shift and go to state 37
-    DIVIDE          shift and go to state 36
-    PLUS            shift and go to state 30
-    MINUS           shift and go to state 31
-    LESSTHAN        shift and go to state 34
-    LESSTHANEQ      shift and go to state 32
-    GREATTHAN       shift and go to state 35
-    GREATTHANEQ     shift and go to state 33
-    NOTEQUAL        shift and go to state 28
-    ISEQUAL         shift and go to state 29
-
-  ! MINUS           [ reduce using rule 21 (calc_2 -> expression .) ]
+    $end            reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    LEFT_KEY        reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    IF              reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    WHILE           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    NAME            reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    PRINT           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    LEFT_PAR        reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    MINUS           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    INT             reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    FLOAT           reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    ELSE            reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
+    RIGHT_KEY       reduce using rule 9 (if_else -> IF LEFT_PAR expression RIGHT_PAR then_statement else_statement .)
 
 
 state 72
 
-    (14) do_statement -> DO print .
+    (14) do_statement -> DO calc_2 .
+    (23) calc_2 -> calc_2 . calc_2
+    (15) calc_2 -> . if_else
+    (16) calc_2 -> . if
+    (17) calc_2 -> . while_do
+    (18) calc_2 -> . read TERM
+    (19) calc_2 -> . print TERM
+    (20) calc_2 -> . var_assign TERM
+    (21) calc_2 -> . expression
+    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
+    (23) calc_2 -> . calc_2 calc_2
+    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
+    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
+    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
+    (25) read -> . NAME EQUALS INPUT
+    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
+    (24) var_assign -> . NAME EQUALS expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
 
-    $end            reduce using rule 14 (do_statement -> DO print .)
-    LEFT_KEY        reduce using rule 14 (do_statement -> DO print .)
-    IF              reduce using rule 14 (do_statement -> DO print .)
-    WHILE           reduce using rule 14 (do_statement -> DO print .)
-    NAME            reduce using rule 14 (do_statement -> DO print .)
-    PRINT           reduce using rule 14 (do_statement -> DO print .)
-    LEFT_PAR        reduce using rule 14 (do_statement -> DO print .)
-    MINUS           reduce using rule 14 (do_statement -> DO print .)
-    INT             reduce using rule 14 (do_statement -> DO print .)
-    FLOAT           reduce using rule 14 (do_statement -> DO print .)
-    ELSE            reduce using rule 14 (do_statement -> DO print .)
-    RIGHT_KEY       reduce using rule 14 (do_statement -> DO print .)
+  ! shift/reduce conflict for LEFT_KEY resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for NAME resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for LEFT_PAR resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for INT resolved as shift
+  ! shift/reduce conflict for FLOAT resolved as shift
+    ELSE            reduce using rule 14 (do_statement -> DO calc_2 .)
+    $end            reduce using rule 14 (do_statement -> DO calc_2 .)
+    RIGHT_KEY       reduce using rule 14 (do_statement -> DO calc_2 .)
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
 
+  ! LEFT_KEY        [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! IF              [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! WHILE           [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! NAME            [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! PRINT           [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! LEFT_PAR        [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! MINUS           [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! INT             [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+  ! FLOAT           [ reduce using rule 14 (do_statement -> DO calc_2 .) ]
+
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 75
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
 
 state 73
+
+    (19) calc_2 -> print TERM .
+
+    LEFT_KEY        reduce using rule 19 (calc_2 -> print TERM .)
+    IF              reduce using rule 19 (calc_2 -> print TERM .)
+    WHILE           reduce using rule 19 (calc_2 -> print TERM .)
+    NAME            reduce using rule 19 (calc_2 -> print TERM .)
+    PRINT           reduce using rule 19 (calc_2 -> print TERM .)
+    LEFT_PAR        reduce using rule 19 (calc_2 -> print TERM .)
+    MINUS           reduce using rule 19 (calc_2 -> print TERM .)
+    INT             reduce using rule 19 (calc_2 -> print TERM .)
+    FLOAT           reduce using rule 19 (calc_2 -> print TERM .)
+    RIGHT_KEY       reduce using rule 19 (calc_2 -> print TERM .)
+    ELSE            reduce using rule 19 (calc_2 -> print TERM .)
+    $end            reduce using rule 19 (calc_2 -> print TERM .)
+
+
+state 74
+
+    (18) calc_2 -> read TERM .
+
+    LEFT_KEY        reduce using rule 18 (calc_2 -> read TERM .)
+    IF              reduce using rule 18 (calc_2 -> read TERM .)
+    WHILE           reduce using rule 18 (calc_2 -> read TERM .)
+    NAME            reduce using rule 18 (calc_2 -> read TERM .)
+    PRINT           reduce using rule 18 (calc_2 -> read TERM .)
+    LEFT_PAR        reduce using rule 18 (calc_2 -> read TERM .)
+    MINUS           reduce using rule 18 (calc_2 -> read TERM .)
+    INT             reduce using rule 18 (calc_2 -> read TERM .)
+    FLOAT           reduce using rule 18 (calc_2 -> read TERM .)
+    RIGHT_KEY       reduce using rule 18 (calc_2 -> read TERM .)
+    ELSE            reduce using rule 18 (calc_2 -> read TERM .)
+    $end            reduce using rule 18 (calc_2 -> read TERM .)
+
+
+state 75
+
+    (23) calc_2 -> calc_2 calc_2 .
+    (23) calc_2 -> calc_2 . calc_2
+    (15) calc_2 -> . if_else
+    (16) calc_2 -> . if
+    (17) calc_2 -> . while_do
+    (18) calc_2 -> . read TERM
+    (19) calc_2 -> . print TERM
+    (20) calc_2 -> . var_assign TERM
+    (21) calc_2 -> . expression
+    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
+    (23) calc_2 -> . calc_2 calc_2
+    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
+    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
+    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
+    (25) read -> . NAME EQUALS INPUT
+    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
+    (24) var_assign -> . NAME EQUALS expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+  ! shift/reduce conflict for LEFT_KEY resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for NAME resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for LEFT_PAR resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for INT resolved as shift
+  ! shift/reduce conflict for FLOAT resolved as shift
+    RIGHT_KEY       reduce using rule 23 (calc_2 -> calc_2 calc_2 .)
+    ELSE            reduce using rule 23 (calc_2 -> calc_2 calc_2 .)
+    $end            reduce using rule 23 (calc_2 -> calc_2 calc_2 .)
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+
+  ! LEFT_KEY        [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! IF              [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! WHILE           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! NAME            [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! PRINT           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! LEFT_PAR        [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! MINUS           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! INT             [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+  ! FLOAT           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
+
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 75
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
+
+state 76
+
+    (22) calc_2 -> LEFT_KEY calc_2 . RIGHT_KEY
+    (23) calc_2 -> calc_2 . calc_2
+    (15) calc_2 -> . if_else
+    (16) calc_2 -> . if
+    (17) calc_2 -> . while_do
+    (18) calc_2 -> . read TERM
+    (19) calc_2 -> . print TERM
+    (20) calc_2 -> . var_assign TERM
+    (21) calc_2 -> . expression
+    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
+    (23) calc_2 -> . calc_2 calc_2
+    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
+    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
+    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
+    (25) read -> . NAME EQUALS INPUT
+    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
+    (24) var_assign -> . NAME EQUALS expression
+    (27) expression -> . expression MULTIPLY expression
+    (28) expression -> . expression DIVIDE expression
+    (29) expression -> . expression PLUS expression
+    (30) expression -> . expression MINUS expression
+    (31) expression -> . expression LESSTHAN expression
+    (32) expression -> . expression LESSTHANEQ expression
+    (33) expression -> . expression GREATTHAN expression
+    (34) expression -> . expression GREATTHANEQ expression
+    (35) expression -> . expression NOTEQUAL expression
+    (36) expression -> . expression ISEQUAL expression
+    (37) expression -> . LEFT_PAR expression RIGHT_PAR
+    (38) expression -> . MINUS expression
+    (39) expression -> . INT
+    (40) expression -> . FLOAT
+    (41) expression -> . NAME
+
+    RIGHT_KEY       shift and go to state 79
+    LEFT_KEY        shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 8
+    NAME            shift and go to state 15
+    PRINT           shift and go to state 12
+    LEFT_PAR        shift and go to state 10
+    MINUS           shift and go to state 13
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 16
+
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 75
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
+
+state 77
+
+    (20) calc_2 -> var_assign TERM .
+
+    LEFT_KEY        reduce using rule 20 (calc_2 -> var_assign TERM .)
+    IF              reduce using rule 20 (calc_2 -> var_assign TERM .)
+    WHILE           reduce using rule 20 (calc_2 -> var_assign TERM .)
+    NAME            reduce using rule 20 (calc_2 -> var_assign TERM .)
+    PRINT           reduce using rule 20 (calc_2 -> var_assign TERM .)
+    LEFT_PAR        reduce using rule 20 (calc_2 -> var_assign TERM .)
+    MINUS           reduce using rule 20 (calc_2 -> var_assign TERM .)
+    INT             reduce using rule 20 (calc_2 -> var_assign TERM .)
+    FLOAT           reduce using rule 20 (calc_2 -> var_assign TERM .)
+    RIGHT_KEY       reduce using rule 20 (calc_2 -> var_assign TERM .)
+    ELSE            reduce using rule 20 (calc_2 -> var_assign TERM .)
+    $end            reduce using rule 20 (calc_2 -> var_assign TERM .)
+
+
+state 78
 
     (12) else_statement -> ELSE calc_2 .
     (23) calc_2 -> calc_2 . calc_2
@@ -2090,209 +2365,24 @@ state 73
     $end            reduce using rule 12 (else_statement -> ELSE calc_2 .)
     RIGHT_KEY       reduce using rule 12 (else_statement -> ELSE calc_2 .)
 
-  ! LEFT_KEY        [ shift and go to state 64 ]
-  ! IF              [ shift and go to state 8 ]
-  ! WHILE           [ shift and go to state 16 ]
-  ! NAME            [ shift and go to state 11 ]
-  ! PRINT           [ shift and go to state 1 ]
-  ! LEFT_PAR        [ shift and go to state 4 ]
-  ! MINUS           [ shift and go to state 3 ]
-  ! INT             [ shift and go to state 10 ]
-  ! FLOAT           [ shift and go to state 14 ]
+  ! LEFT_KEY        [ shift and go to state 67 ]
+  ! IF              [ shift and go to state 6 ]
+  ! WHILE           [ shift and go to state 8 ]
+  ! NAME            [ shift and go to state 15 ]
+  ! PRINT           [ shift and go to state 12 ]
+  ! LEFT_PAR        [ shift and go to state 10 ]
+  ! MINUS           [ shift and go to state 13 ]
+  ! INT             [ shift and go to state 1 ]
+  ! FLOAT           [ shift and go to state 16 ]
 
-    calc_2                         shift and go to state 76
-    if_else                        shift and go to state 66
-    var_assign                     shift and go to state 69
-    while_do                       shift and go to state 67
-    read                           shift and go to state 70
-    if                             shift and go to state 65
-    print                          shift and go to state 63
-    expression                     shift and go to state 71
-
-state 74
-
-    (19) calc_2 -> print TERM .
-
-    LEFT_KEY        reduce using rule 19 (calc_2 -> print TERM .)
-    IF              reduce using rule 19 (calc_2 -> print TERM .)
-    WHILE           reduce using rule 19 (calc_2 -> print TERM .)
-    NAME            reduce using rule 19 (calc_2 -> print TERM .)
-    PRINT           reduce using rule 19 (calc_2 -> print TERM .)
-    LEFT_PAR        reduce using rule 19 (calc_2 -> print TERM .)
-    MINUS           reduce using rule 19 (calc_2 -> print TERM .)
-    INT             reduce using rule 19 (calc_2 -> print TERM .)
-    FLOAT           reduce using rule 19 (calc_2 -> print TERM .)
-    ELSE            reduce using rule 19 (calc_2 -> print TERM .)
-    $end            reduce using rule 19 (calc_2 -> print TERM .)
-    RIGHT_KEY       reduce using rule 19 (calc_2 -> print TERM .)
-
-
-state 75
-
-    (22) calc_2 -> LEFT_KEY calc_2 . RIGHT_KEY
-    (23) calc_2 -> calc_2 . calc_2
-    (15) calc_2 -> . if_else
-    (16) calc_2 -> . if
-    (17) calc_2 -> . while_do
-    (18) calc_2 -> . read TERM
-    (19) calc_2 -> . print TERM
-    (20) calc_2 -> . var_assign TERM
-    (21) calc_2 -> . expression
-    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
-    (23) calc_2 -> . calc_2 calc_2
-    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
-    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
-    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
-    (25) read -> . NAME EQUALS INPUT
-    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
-    (24) var_assign -> . NAME EQUALS expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-    RIGHT_KEY       shift and go to state 79
-    LEFT_KEY        shift and go to state 64
-    IF              shift and go to state 8
-    WHILE           shift and go to state 16
-    NAME            shift and go to state 11
-    PRINT           shift and go to state 1
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-
-    calc_2                         shift and go to state 76
-    if_else                        shift and go to state 66
-    var_assign                     shift and go to state 69
-    while_do                       shift and go to state 67
-    read                           shift and go to state 70
-    if                             shift and go to state 65
-    print                          shift and go to state 63
-    expression                     shift and go to state 71
-
-state 76
-
-    (23) calc_2 -> calc_2 calc_2 .
-    (23) calc_2 -> calc_2 . calc_2
-    (15) calc_2 -> . if_else
-    (16) calc_2 -> . if
-    (17) calc_2 -> . while_do
-    (18) calc_2 -> . read TERM
-    (19) calc_2 -> . print TERM
-    (20) calc_2 -> . var_assign TERM
-    (21) calc_2 -> . expression
-    (22) calc_2 -> . LEFT_KEY calc_2 RIGHT_KEY
-    (23) calc_2 -> . calc_2 calc_2
-    (9) if_else -> . IF LEFT_PAR expression RIGHT_PAR then_statement else_statement
-    (10) if -> . IF LEFT_PAR expression RIGHT_PAR then_statement
-    (13) while_do -> . WHILE LEFT_PAR expression RIGHT_PAR do_statement
-    (25) read -> . NAME EQUALS INPUT
-    (26) print -> . PRINT LEFT_PAR expression RIGHT_PAR
-    (24) var_assign -> . NAME EQUALS expression
-    (27) expression -> . expression MULTIPLY expression
-    (28) expression -> . expression DIVIDE expression
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression LESSTHAN expression
-    (32) expression -> . expression LESSTHANEQ expression
-    (33) expression -> . expression GREATTHAN expression
-    (34) expression -> . expression GREATTHANEQ expression
-    (35) expression -> . expression NOTEQUAL expression
-    (36) expression -> . expression ISEQUAL expression
-    (37) expression -> . LEFT_PAR expression RIGHT_PAR
-    (38) expression -> . MINUS expression
-    (39) expression -> . INT
-    (40) expression -> . FLOAT
-    (41) expression -> . NAME
-
-  ! shift/reduce conflict for LEFT_KEY resolved as shift
-  ! shift/reduce conflict for IF resolved as shift
-  ! shift/reduce conflict for WHILE resolved as shift
-  ! shift/reduce conflict for NAME resolved as shift
-  ! shift/reduce conflict for PRINT resolved as shift
-  ! shift/reduce conflict for LEFT_PAR resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for INT resolved as shift
-  ! shift/reduce conflict for FLOAT resolved as shift
-    ELSE            reduce using rule 23 (calc_2 -> calc_2 calc_2 .)
-    $end            reduce using rule 23 (calc_2 -> calc_2 calc_2 .)
-    RIGHT_KEY       reduce using rule 23 (calc_2 -> calc_2 calc_2 .)
-    LEFT_KEY        shift and go to state 64
-    IF              shift and go to state 8
-    WHILE           shift and go to state 16
-    NAME            shift and go to state 11
-    PRINT           shift and go to state 1
-    LEFT_PAR        shift and go to state 4
-    MINUS           shift and go to state 3
-    INT             shift and go to state 10
-    FLOAT           shift and go to state 14
-
-  ! LEFT_KEY        [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! IF              [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! WHILE           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! NAME            [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! PRINT           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! LEFT_PAR        [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! MINUS           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! INT             [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-  ! FLOAT           [ reduce using rule 23 (calc_2 -> calc_2 calc_2 .) ]
-
-    calc_2                         shift and go to state 76
-    if_else                        shift and go to state 66
-    var_assign                     shift and go to state 69
-    while_do                       shift and go to state 67
-    read                           shift and go to state 70
-    if                             shift and go to state 65
-    print                          shift and go to state 63
-    expression                     shift and go to state 71
-
-state 77
-
-    (20) calc_2 -> var_assign TERM .
-
-    LEFT_KEY        reduce using rule 20 (calc_2 -> var_assign TERM .)
-    IF              reduce using rule 20 (calc_2 -> var_assign TERM .)
-    WHILE           reduce using rule 20 (calc_2 -> var_assign TERM .)
-    NAME            reduce using rule 20 (calc_2 -> var_assign TERM .)
-    PRINT           reduce using rule 20 (calc_2 -> var_assign TERM .)
-    LEFT_PAR        reduce using rule 20 (calc_2 -> var_assign TERM .)
-    MINUS           reduce using rule 20 (calc_2 -> var_assign TERM .)
-    INT             reduce using rule 20 (calc_2 -> var_assign TERM .)
-    FLOAT           reduce using rule 20 (calc_2 -> var_assign TERM .)
-    ELSE            reduce using rule 20 (calc_2 -> var_assign TERM .)
-    $end            reduce using rule 20 (calc_2 -> var_assign TERM .)
-    RIGHT_KEY       reduce using rule 20 (calc_2 -> var_assign TERM .)
-
-
-state 78
-
-    (18) calc_2 -> read TERM .
-
-    LEFT_KEY        reduce using rule 18 (calc_2 -> read TERM .)
-    IF              reduce using rule 18 (calc_2 -> read TERM .)
-    WHILE           reduce using rule 18 (calc_2 -> read TERM .)
-    NAME            reduce using rule 18 (calc_2 -> read TERM .)
-    PRINT           reduce using rule 18 (calc_2 -> read TERM .)
-    LEFT_PAR        reduce using rule 18 (calc_2 -> read TERM .)
-    MINUS           reduce using rule 18 (calc_2 -> read TERM .)
-    INT             reduce using rule 18 (calc_2 -> read TERM .)
-    FLOAT           reduce using rule 18 (calc_2 -> read TERM .)
-    ELSE            reduce using rule 18 (calc_2 -> read TERM .)
-    $end            reduce using rule 18 (calc_2 -> read TERM .)
-    RIGHT_KEY       reduce using rule 18 (calc_2 -> read TERM .)
-
+    if_else                        shift and go to state 65
+    calc_2                         shift and go to state 75
+    print                          shift and go to state 61
+    read                           shift and go to state 62
+    var_assign                     shift and go to state 68
+    while_do                       shift and go to state 63
+    if                             shift and go to state 69
+    expression                     shift and go to state 64
 
 state 79
 
@@ -2307,50 +2397,59 @@ state 79
     MINUS           reduce using rule 22 (calc_2 -> LEFT_KEY calc_2 RIGHT_KEY .)
     INT             reduce using rule 22 (calc_2 -> LEFT_KEY calc_2 RIGHT_KEY .)
     FLOAT           reduce using rule 22 (calc_2 -> LEFT_KEY calc_2 RIGHT_KEY .)
+    RIGHT_KEY       reduce using rule 22 (calc_2 -> LEFT_KEY calc_2 RIGHT_KEY .)
     ELSE            reduce using rule 22 (calc_2 -> LEFT_KEY calc_2 RIGHT_KEY .)
     $end            reduce using rule 22 (calc_2 -> LEFT_KEY calc_2 RIGHT_KEY .)
-    RIGHT_KEY       reduce using rule 22 (calc_2 -> LEFT_KEY calc_2 RIGHT_KEY .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for MULTIPLY in state 44 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 44 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 44 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 44 resolved as shift
-WARNING: shift/reduce conflict for LESSTHAN in state 44 resolved as shift
-WARNING: shift/reduce conflict for LESSTHANEQ in state 44 resolved as shift
-WARNING: shift/reduce conflict for GREATTHAN in state 44 resolved as shift
-WARNING: shift/reduce conflict for GREATTHANEQ in state 44 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 44 resolved as shift
-WARNING: shift/reduce conflict for ISEQUAL in state 44 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 45 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 45 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 45 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 45 resolved as shift
-WARNING: shift/reduce conflict for LESSTHAN in state 45 resolved as shift
-WARNING: shift/reduce conflict for LESSTHANEQ in state 45 resolved as shift
-WARNING: shift/reduce conflict for GREATTHAN in state 45 resolved as shift
-WARNING: shift/reduce conflict for GREATTHANEQ in state 45 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 45 resolved as shift
-WARNING: shift/reduce conflict for ISEQUAL in state 45 resolved as shift
-WARNING: shift/reduce conflict for ELSE in state 57 resolved as shift
-WARNING: shift/reduce conflict for LEFT_KEY in state 68 resolved as shift
-WARNING: shift/reduce conflict for IF in state 68 resolved as shift
-WARNING: shift/reduce conflict for WHILE in state 68 resolved as shift
-WARNING: shift/reduce conflict for NAME in state 68 resolved as shift
-WARNING: shift/reduce conflict for PRINT in state 68 resolved as shift
-WARNING: shift/reduce conflict for LEFT_PAR in state 68 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 68 resolved as shift
-WARNING: shift/reduce conflict for INT in state 68 resolved as shift
-WARNING: shift/reduce conflict for FLOAT in state 68 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 71 resolved as shift
-WARNING: shift/reduce conflict for LEFT_KEY in state 76 resolved as shift
-WARNING: shift/reduce conflict for IF in state 76 resolved as shift
-WARNING: shift/reduce conflict for WHILE in state 76 resolved as shift
-WARNING: shift/reduce conflict for NAME in state 76 resolved as shift
-WARNING: shift/reduce conflict for PRINT in state 76 resolved as shift
-WARNING: shift/reduce conflict for LEFT_PAR in state 76 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 76 resolved as shift
-WARNING: shift/reduce conflict for INT in state 76 resolved as shift
-WARNING: shift/reduce conflict for FLOAT in state 76 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 40 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 40 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 40 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 40 resolved as shift
+WARNING: shift/reduce conflict for LESSTHAN in state 40 resolved as shift
+WARNING: shift/reduce conflict for LESSTHANEQ in state 40 resolved as shift
+WARNING: shift/reduce conflict for GREATTHAN in state 40 resolved as shift
+WARNING: shift/reduce conflict for GREATTHANEQ in state 40 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUAL in state 40 resolved as shift
+WARNING: shift/reduce conflict for ISEQUAL in state 40 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 48 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 48 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 48 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 48 resolved as shift
+WARNING: shift/reduce conflict for LESSTHAN in state 48 resolved as shift
+WARNING: shift/reduce conflict for LESSTHANEQ in state 48 resolved as shift
+WARNING: shift/reduce conflict for GREATTHAN in state 48 resolved as shift
+WARNING: shift/reduce conflict for GREATTHANEQ in state 48 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUAL in state 48 resolved as shift
+WARNING: shift/reduce conflict for ISEQUAL in state 48 resolved as shift
+WARNING: shift/reduce conflict for ELSE in state 58 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 64 resolved as shift
+WARNING: shift/reduce conflict for LEFT_KEY in state 66 resolved as shift
+WARNING: shift/reduce conflict for IF in state 66 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 66 resolved as shift
+WARNING: shift/reduce conflict for NAME in state 66 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 66 resolved as shift
+WARNING: shift/reduce conflict for LEFT_PAR in state 66 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 66 resolved as shift
+WARNING: shift/reduce conflict for INT in state 66 resolved as shift
+WARNING: shift/reduce conflict for FLOAT in state 66 resolved as shift
+WARNING: shift/reduce conflict for LEFT_KEY in state 72 resolved as shift
+WARNING: shift/reduce conflict for IF in state 72 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 72 resolved as shift
+WARNING: shift/reduce conflict for NAME in state 72 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 72 resolved as shift
+WARNING: shift/reduce conflict for LEFT_PAR in state 72 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 72 resolved as shift
+WARNING: shift/reduce conflict for INT in state 72 resolved as shift
+WARNING: shift/reduce conflict for FLOAT in state 72 resolved as shift
+WARNING: shift/reduce conflict for LEFT_KEY in state 75 resolved as shift
+WARNING: shift/reduce conflict for IF in state 75 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 75 resolved as shift
+WARNING: shift/reduce conflict for NAME in state 75 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 75 resolved as shift
+WARNING: shift/reduce conflict for LEFT_PAR in state 75 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 75 resolved as shift
+WARNING: shift/reduce conflict for INT in state 75 resolved as shift
+WARNING: shift/reduce conflict for FLOAT in state 75 resolved as shift

@@ -209,7 +209,7 @@ def p_while_do(p):
 
 def p_do_statement(p):
 	'''
-	do_statement : DO print
+	do_statement : DO calc_2
 	'''
 	p[0] = p[2]
 
@@ -223,10 +223,22 @@ def p_calc_2(p):
 		 | print TERM
 		 | var_assign TERM
 		 | expression
-		 | LEFT_KEY calc_2 RIGHT_KEY
-		 | calc_2 calc_2
 	'''
 	p[0] = p[1]
+
+
+def p_calc_2_keys(p):
+	'''
+	calc_2 : LEFT_KEY calc_2 RIGHT_KEY 
+	'''
+	p[0] = p[2]
+
+
+def p_calc_2_subtasks(p):
+	'''
+	calc_2 : calc_2 calc_2
+	'''
+	p[0] = ('subtasks', p[1], p[2])
 
 
 def p_var_assign(p):
@@ -348,6 +360,10 @@ def run(p):
 		elif p[0] == 'while':
 			while run(p[1]):
 				run(p[2])
+				
+		elif p[0] == 'subtasks':
+			run(p[1])
+			run(p[2])
 
 		elif p[0] == 'var':
 			if p[1] not in env:
