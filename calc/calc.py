@@ -27,7 +27,10 @@ tokens = [
 	'PRINT',
 	'IF',
 	'THEN',
-	'ELSE'
+	'ELSE',
+	'WHILE',
+	'DO',
+	'TERM'
 ]
 
 t_PLUS = r'\+'
@@ -72,6 +75,24 @@ def t_THEN(t):
 def t_ELSE(t):
 	r'else'
 	t.type = 'ELSE'
+	return t
+
+
+def t_WHILE(t):
+	r'while'
+	t.type = 'WHILE'
+	return t
+
+
+def t_do(t):
+	r'do'
+	t.type = 'DO'
+	return t
+
+
+def t_TERM(t):
+	r'\;'
+	t.type = 'TERM'
 	return t
 
 
@@ -124,11 +145,12 @@ precedence = (
 
 def p_calc(p):
 	'''
-	calc : if_else
-		 | if
-		 | read
-		 | print
-		 | var_assign
+	calc : if_else 
+		 | if 
+		 | while_do 
+		 | read TERM
+		 | print TERM
+		 | var_assign TERM
 		 | expression
 	     | empty
 	'''
@@ -149,16 +171,30 @@ def p_if(p):
 	p[0] = ('if', p[3], p[5])
 
 
-def p_else_statement(p):
+def p_then_statement(p):
 	'''
-	else_statement : ELSE var_assign
+	then_statement : THEN var_assign TERM
 	'''
 	p[0] = p[2]
 
 
-def p_then_statement(p):
+def p_else_statement(p):
 	'''
-	then_statement : THEN var_assign
+	else_statement : ELSE var_assign TERM
+	'''
+	p[0] = p[2]
+
+
+def p_while_do(p):
+	'''
+	while_do : WHILE LEFT_PAR expression RIGHT_PAR do_statement
+	'''
+	p[0] = ('while', p[3], p[5])
+
+
+def p_do_statement(p):
+	'''
+	do_statement : DO print
 	'''
 	p[0] = p[2]
 
@@ -279,6 +315,10 @@ def run(p):
 				run(p[2])
 			else:
 				run(p[3])
+		elif p[0] == 'while':
+			while run(p[1]):
+				run(p[2])
+
 		elif p[0] == 'var':
 			if p[1] not in env:
 				raise ValueError('Undeclared variable found!')
