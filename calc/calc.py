@@ -154,23 +154,16 @@ precedence = (
 	('left', 'PLUS', 'MINUS'),
 	('left', 'MULTIPLY', 'DIVIDE'),
 	('left', 'IF'),
-	('left', 'ELSE')
+	('left', 'ELSE'),
+	('left', 'DO')
 )
 
 
 def p_calc(p):
 	'''
-	calc : if_else 
-		 | if 
-		 | while_do 
-		 | read TERM
-		 | print TERM
-		 | var_assign TERM
-		 | expression
-		 | calc_2
-	     | empty
+	calc : calc_2 
 	'''
-	print(run(p[1]))
+	run(p[1])
 
 
 def p_if_else(p):
@@ -187,6 +180,13 @@ def p_if(p):
 	p[0] = ('if', p[3], p[5])
 
 
+def p_else_statement(p):
+	'''
+	else_statement : ELSE calc_2
+	'''
+	p[0] = p[2]
+
+
 def p_then_statement(p):
 	'''
 	then_statement : THEN calc_2 
@@ -194,9 +194,9 @@ def p_then_statement(p):
 	p[0] = p[2]
 
 
-def p_else_statement(p):
+def p_do_statement(p):
 	'''
-	else_statement : ELSE calc_2
+	do_statement : DO calc_2
 	'''
 	p[0] = p[2]
 
@@ -206,13 +206,6 @@ def p_while_do(p):
 	while_do : WHILE LEFT_PAR expression RIGHT_PAR do_statement
 	'''
 	p[0] = ('while', p[3], p[5])
-
-
-def p_do_statement(p):
-	'''
-	do_statement : DO calc_2
-	'''
-	p[0] = p[2]
 
 
 def p_calc_2(p):
@@ -253,7 +246,7 @@ def p_read(p):
 	'''
 	read : NAME EQUALS INPUT
 	'''
-	p[0] = ('=', p[1], int(input()))
+	p[0] = ('=', p[1], int(input(">")))
 
 
 def p_print(p):
@@ -359,6 +352,7 @@ def run(p):
 			else:
 				run(p[3])
 		elif p[0] == 'while':
+			# pdb.set_trace()
 			while run(p[1]):
 				run(p[2])
 
