@@ -155,7 +155,9 @@ precedence = (
 	('left', 'MULTIPLY', 'DIVIDE'),
 	('left', 'IF'),
 	('left', 'ELSE'),
-	('left', 'DO')
+	('left', 'DO'),
+	('left', 'THEN'),
+	('left', 'WHILE')
 )
 
 
@@ -352,7 +354,6 @@ def run(p):
 			else:
 				run(p[3])
 		elif p[0] == 'while':
-			# pdb.set_trace()
 			while run(p[1]):
 				run(p[2])
 
@@ -371,8 +372,6 @@ def run(p):
 
 params = sys.argv
 
-# pdb.set_trace()
-
 if len(params) == 1:
 	while True:
 		try:
@@ -385,7 +384,7 @@ if len(params) == 1:
 		except ValueError as e:
 			print(e)
 
-if len(params) == 2:
+elif len(params) == 2:
 
 	filename = params[1]
 	file = open(filename, 'r')
@@ -396,8 +395,6 @@ if len(params) == 2:
 
 		code += line.replace("\n", "").replace("\t", "")
 		line = file.readline()
-
-	# pdb.set_trace()
 
 	try:
 		parser.parse(code)
