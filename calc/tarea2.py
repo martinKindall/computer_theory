@@ -248,7 +248,7 @@ def p_read(p):
 	'''
 	read : NAME EQUALS INPUT
 	'''
-	p[0] = ('=', p[1], int(input(">")))
+	p[0] = ('read', p[1])
 
 
 def p_print(p):
@@ -356,6 +356,8 @@ def run(p):
 		elif p[0] == 'while':
 			while run(p[1]):
 				run(p[2])
+		elif p[0] == 'read':
+			env[p[1]] = int(input(">"))
 
 		elif p[0] == 'subtasks':
 			run(p[1])
